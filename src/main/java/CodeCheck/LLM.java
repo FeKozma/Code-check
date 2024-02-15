@@ -1,4 +1,4 @@
-package org.example;
+package CodeCheck;
 import com.hexadevlabs.gpt4all.LLModel;
 
 import java.util.List;
