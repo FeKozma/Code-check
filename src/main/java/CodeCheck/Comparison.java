@@ -1,4 +1,4 @@
-package org.example;
+package CodeCheck;
 
 public class Comparison {
 

@@ -1,4 +1,4 @@
-package org.example;
+package CodeCheck;
 
 import java.time.LocalDateTime;
 
