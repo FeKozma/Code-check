@@ -11,11 +11,11 @@ public class CheckDirectory {
 
     LLM llm = new LLM();
 
-    public void startModel () {
+    public void startModel() {
         llm.initModel();
     }
 
-    public void stopModel () throws Exception {
+    public void stopModel() throws Exception {
         llm.cleanModel();
     }
 
@@ -44,17 +44,17 @@ public class CheckDirectory {
                 linenumber++;
                 String data = myReader.nextLine();
 
-                if (nrBrackets == null ) {
+                if (nrBrackets == null) {
                     final Pattern p = Pattern.compile(patternMethod);
                     final Matcher m = p.matcher(data);
                     while (m.find()) {
                         nrBrackets = 0;
                         manyFunctions.commitName(m.group(2));
-                        manyFunctions.commitNrParameters(m.group(3).split(" ").length/2);
+                        manyFunctions.commitNrParameters(m.group(3).split(" ").length / 2);
                         manyFunctions.commitFile(file.getName());
                         manyFunctions.commitLine(linenumber);
                         funcContent = "";
-                        Util.debug( "Function: " +
+                        Util.debug("Function: " +
                                 manyFunctions.commit.name + " in " +
                                 manyFunctions.commit.file + ":" +
                                 manyFunctions.commit.line + " with " +

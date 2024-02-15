@@ -1,4 +1,5 @@
 package CodeCheck;
+
 import com.hexadevlabs.gpt4all.LLModel;
 
 import java.util.List;
@@ -10,6 +11,7 @@ public class LLM {
 
     LLModel model;
     LLModel.GenerationConfig config;
+
     public void initModel() {
 
         java.nio.file.Path modelPath = java.nio.file.Path.of("ggml-model-gpt4all-falcon-q4_0.bin");

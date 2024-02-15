@@ -18,7 +18,10 @@ public class WriteObjectToFile {
         }
 
         // Create results directory if it doesn't exist.
-        if (!(new File(Util.PATH_TO_RESULTS).exists())) new File(Util.PATH_TO_RESULTS).mkdir();
+        if (!(new File(Util.PATH_TO_RESULTS).exists())) {
+            new File(Util.PATH_TO_RESULTS).mkdir();
+            Util.log("Created directory %s...", Util.PATH_TO_RESULTS);
+        }
 
         // Look for the next file to write towards.
         int maxResultsFiles = 100;

@@ -3,7 +3,6 @@ package CodeCheck;
 public class Comparison {
 
     boolean equal;
-
     boolean similar;
     String arg;
 
@@ -34,6 +33,6 @@ public class Comparison {
 
     @Override
     public String toString() {
-        return "{\"equal\"=" +equal+", \"similar\"="+similar+", \"arg\"= \"" + arg.replaceAll("\"", "\\\"") + "\", \"function1\"=\"" + oneFunction1.toString()+"\", \"function2\"=\"" + oneFunction2.toString()+"\"}";
+        return "{\"equal\"=" + equal + ", \"similar\"=" + similar + ", \"arg\"= \"" + arg.replaceAll("\"", "\\\"") + "\", \"function1\"=\"" + oneFunction1.toString() + "\", \"function2\"=\"" + oneFunction2.toString() + "\"}";
     }
 }

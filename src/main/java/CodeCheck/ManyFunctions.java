@@ -26,14 +26,17 @@ public class ManyFunctions {
         defineCommit();
         commit.file = file;
     }
+
     public void commitLine(int line) {
         defineCommit();
         commit.line = line;
     }
+
     public void commitNrParameters(int nr) {
         defineCommit();
         commit.nrParams = nr;
     }
+
     public void commitContentLine(String content) {
         defineCommit();
         commit.content.add(content);
