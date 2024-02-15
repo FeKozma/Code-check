@@ -2,8 +2,8 @@ package org.example;
 
 public interface Util {
     // Program variables
-    static final boolean LOG = true;
-    static final String PATH = "C:/Users/Felix/Repo/util";
+    static final boolean LOG = false;
+    static final String PATH = "C:/Users/Felix/Repo/util/";
 
     // Styling
     public static final String ANSI_RESET = "\u001B[0m";

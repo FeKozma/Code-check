@@ -9,19 +9,29 @@ import java.util.regex.Pattern;
 
 public class CheckDirectory {
 
+    LLM llm = new LLM();
+
+    public void startModel () {
+        llm.initModel();
+    }
+
+    public void stopModel () throws Exception {
+        llm.cleanModel();
+    }
     public ManyFunctions checkDirectory(File dir) {
+
         return Arrays.stream(dir.listFiles()).map((file) -> {
             if (file.isDirectory()) return checkDirectory(file);
             else if (file.getName().endsWith(".java")) return checkFile(file);
             else Util.log(Util.ANSI_BLUE + "skipping file: " + file.getName() + Util.ANSI_RESET);
-            return new ManyFunctions();
-        }).reduce(new ManyFunctions(), ManyFunctions::new);
+            return new ManyFunctions(llm);
+        }).reduce(new ManyFunctions(llm), ManyFunctions::new);
     }
     public ManyFunctions checkFile(File file) {
         Util.log(Util.ANSI_BLUE + file.getAbsolutePath() + Util.ANSI_RESET, true);
 
         String patternMethod = "\\s*(protected|private|public)\\s+[a-zA-Z\\>\\<]*\\s([a-zA-Z_]*)\\s*\\((.*\\))";
-        ManyFunctions manyFunctions = new ManyFunctions();
+        ManyFunctions manyFunctions = new ManyFunctions(llm);
 
         try {
             Scanner myReader = new Scanner(file);

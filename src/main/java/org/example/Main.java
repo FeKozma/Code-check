@@ -1,15 +1,11 @@
 package org.example;
 
 import java.io.File;
+import java.util.List;
 
 public class Main {
 
     public static void main(String[] args) throws Exception {
-        //String driverName = "com.mysql.jdbc.Driver";
-        //Class.forName(driverName); // here is the ClassNotFoundException
-        //String serverName = "localhost";
-        //String mydatabase = "suptodo";
-        //String url = "jdbc:mysql://" + serverName + "/" + mydatabase;
 
 
         File baseDir = new File(Util.PATH);
@@ -18,14 +14,27 @@ public class Main {
             throw new Exception("PATH is not a directory, please change the value in Util.java");
         }
 
+        WriteObjectToFile writeToFile = new WriteObjectToFile();
 
-        ManyFunctions manyFunctions = new CheckDirectory().checkDirectory(baseDir);
 
+        CheckDirectory checkDirectory = new CheckDirectory();
+        ManyFunctions manyFunctions = checkDirectory.checkDirectory(baseDir);
+
+        checkDirectory.startModel();
         for (int i = 0; i < manyFunctions.oneFunctions.size(); i++) {
             OneFunction oneFunction = manyFunctions.oneFunctions.get(i);
-            manyFunctions.oneFunctions.subList(i+1, manyFunctions.oneFunctions.size()).stream()
-                    .filter(oneFunction2 -> oneFunction2.equals(oneFunction)).findFirst().ifPresent(of -> Util.log(of.name, true));
+            List<OneFunction> laterOneFunctions = manyFunctions.oneFunctions.subList(i+1, manyFunctions.oneFunctions.size());
+
+            for (int j = 0; j < laterOneFunctions.size(); j++) {
+                Comparison comparison = oneFunction.compare(laterOneFunctions.get(j), checkDirectory.llm);
+                if (comparison.similar || comparison.equal) {
+                    writeToFile.write(comparison.toString());
+
+                    j = laterOneFunctions.size();
+                }
+            }
         }
+        checkDirectory.stopModel();
 
     }
 }

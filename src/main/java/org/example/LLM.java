@@ -12,7 +12,7 @@ public class LLM {
     LLModel.GenerationConfig config;
     public void initModel() {
 
-        java.nio.file.Path modelPath = java.nio.file.Path.of("C:/Users/Felix/AppData/Local/nomic.ai/GPT4All", "gpt4all-falcon-newbpe-q4_0.gguf");
+        java.nio.file.Path modelPath = java.nio.file.Path.of("ggml-model-gpt4all-falcon-q4_0.bin");
 
         model = new LLModel(modelPath);
 
@@ -25,7 +25,9 @@ public class LLM {
     }
 
     public String getAnswer(String question) {
-        return model.chatCompletion(createMessage(question), config).choices.toString();
+        String answer = model.chatCompletion(createMessage(question), config).choices.toString();
+        System.out.println(answer);
+        return answer;
     }
 
     private List<Map<String, String>> createMessage(String content) {

@@ -6,8 +6,9 @@ import java.util.List;
 public class ManyFunctions {
     public List<OneFunction> oneFunctions;
 
+    public LLM llm;
     public OneFunction commit;
-    public ManyFunctions() {
+    public ManyFunctions(LLM llm) {
         this.oneFunctions = new ArrayList<>();
     }
 
