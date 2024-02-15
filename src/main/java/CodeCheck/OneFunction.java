@@ -22,8 +22,7 @@ public class OneFunction {
 
     public Comparison compare(OneFunction other, LLM llm) {
         switch (equals(other)) {
-            case 1:
-                return new Comparison(true, "Functions are identical").setFunctions(this, other);
+            case 1: return new Comparison(true, "Functions are identical").setFunctions(this, other);
             case 2: return new Comparison(false, true, llmComparison(other, llm)).setFunctions(this, other);
             case 3: return new Comparison(false, false, "Empty or closetherby");
             default:
@@ -44,11 +43,11 @@ public class OneFunction {
     }
 
     private String getFunctionMsg(int nr) {
-        return "\n\n------function " + nr + "------\n"+ removeLogAndComments();
+        return "\n\n------function " + nr + "------\n" + removeLogAndComments();
     }
 
     private String removeLogAndComments() {
-        return this.content.stream().filter(s -> !s.matches("^\\s*\\/\\/")).filter(s -> s.startsWith("Log")).reduce( "", (s, s1) -> s + "\n" + s);
+        return this.content.stream().filter(s -> !s.matches("^\\s*\\/\\/")).filter(s -> s.startsWith("Log")).reduce("", (s, s1) -> s + "\n" + s);
     }
 
     private String removeLogAndCommentsAndMore() {
