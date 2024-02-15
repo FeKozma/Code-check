@@ -7,8 +7,8 @@ public interface Util {
     LoggingLevel LOGGING_LEVEL = LoggingLevel.TRACE;
     boolean TEMP_FILE_ENABLED = false; // This is related to TEMP_FILE below.
     String TEMP_FILE = "debugFile.txt"; // If enabled, this file will be deleted and replaced every run instead of using the results files.
-    String PATH_TO_RESULTS = "results"; // Where the result files are saved.
-    String PATH_TO_CODE = "util"; // Path to the code to scan.
+    String PATH_TO_RESULTS = "results"; // Directory of where the result files are saved.
+    String PATH_TO_CODE = "util"; // Directory path to where the code is to be scanned.
 
     // Styling
     String ANSI_RESET = "\u001B[0m";
@@ -51,24 +51,12 @@ public interface Util {
         logReduced("[%s] ".formatted(LocalDateTime.now()) + msg + System.lineSeparator(), level);
     }
 
-    static void log(String msg, boolean condition) {
-        if (condition) log(msg, LoggingLevel.INFO);
-    }
-
-    static void log(String msg, LoggingLevel level, boolean condition) {
-        if (condition) log(msg, level);
-    }
-
     static void log(String msg, Object... formatting) {
         log(String.format(msg, formatting));
     }
 
     static void log(String msg, LoggingLevel level, Object... formatting) {
         log(String.format(msg, formatting), level);
-    }
-
-    static void log(String msg, LoggingLevel level, boolean condition, Object... formatting) {
-        if (condition) log(msg, level, formatting);
     }
 
     static void logReduced(String msg, LoggingLevel level, boolean newLine) {
