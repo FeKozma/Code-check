@@ -18,6 +18,7 @@ public class CheckDirectory {
     public void stopModel () throws Exception {
         llm.cleanModel();
     }
+
     public ManyFunctions checkDirectory(File dir) {
 
         return Arrays.stream(dir.listFiles()).map((file) -> {
@@ -27,6 +28,7 @@ public class CheckDirectory {
             return new ManyFunctions(llm);
         }).reduce(new ManyFunctions(llm), ManyFunctions::new);
     }
+
     public ManyFunctions checkFile(File file) {
         Util.log(Util.ANSI_BLUE + file.getAbsolutePath() + Util.ANSI_RESET, true);
 
@@ -78,6 +80,7 @@ public class CheckDirectory {
         }
         return manyFunctions;
     }
+
     private static int countBrackets(String str) {
         int count = 0;
         for (int i = 0; i < str.length(); i++) {
