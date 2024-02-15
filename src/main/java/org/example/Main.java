@@ -7,7 +7,7 @@ import java.util.List;
 public class Main {
 
     public static void main(String[] args) throws Exception {
-        Util.log("[%s] Starting up...%n", LocalDateTime.now());
+        Util.log("Starting up...%n");
 
         File baseCodeDir = new File(Util.PATH_TO_CODE);
         if (!baseCodeDir.isDirectory()) {
@@ -37,6 +37,6 @@ public class Main {
         }
         checkDirectory.stopModel();
 
-        Util.log("[%s] Closing down...%n", LocalDateTime.now());
+        Util.log("Closing down...%n");
     }
 }

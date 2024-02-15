@@ -24,13 +24,13 @@ public class CheckDirectory {
         return Arrays.stream(dir.listFiles()).map((file) -> {
             if (file.isDirectory()) return checkDirectory(file);
             else if (file.getName().endsWith(".java")) return checkFile(file);
-            else Util.log(Util.ANSI_BLUE + "skipping file: " + file.getName() + Util.ANSI_RESET);
+            else Util.trace("Skipping file: " + file.getName());
             return new ManyFunctions(llm);
         }).reduce(new ManyFunctions(llm), ManyFunctions::new);
     }
 
     public ManyFunctions checkFile(File file) {
-        Util.log(Util.ANSI_BLUE + file.getAbsolutePath() + Util.ANSI_RESET, true);
+        Util.trace("ManyFunctions:checkFile -> " + file.getAbsolutePath());
 
         String patternMethod = "\\s*(protected|private|public)\\s+[a-zA-Z\\>\\<]*\\s([a-zA-Z_]*)\\s*\\((.*\\))";
         ManyFunctions manyFunctions = new ManyFunctions(llm);
@@ -54,7 +54,11 @@ public class CheckDirectory {
                         manyFunctions.commitFile(file.getName());
                         manyFunctions.commitLine(linenumber);
                         funcContent = "";
-                        Util.log(Util.ANSI_RED + "function: " + manyFunctions.commit.name + " in " + manyFunctions.commit.file + ":" + manyFunctions.commit.line + " with " + manyFunctions.commit.nrParams + " parameters" + Util.ANSI_RESET);
+                        Util.debug( "Function: " +
+                                manyFunctions.commit.name + " in " +
+                                manyFunctions.commit.file + ":" +
+                                manyFunctions.commit.line + " with " +
+                                manyFunctions.commit.nrParams + " parameters");
                     }
                 } else {
                     manyFunctions.commitContentLine(data);
@@ -67,7 +71,7 @@ public class CheckDirectory {
                     if (nrBrackets == 0) {
                         manyFunctions.push();
                         funcContent = "";
-                        Util.log(Util.ANSI_RED + "end of function" + Util.ANSI_RESET);
+                        Util.debug("End of function.");
                         nrBrackets = null;
                     }
                 }
