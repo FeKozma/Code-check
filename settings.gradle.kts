@@ -1,2 +1,1 @@
-rootProject.name = "util"
-
+rootProject.name = "CodeCheck"
