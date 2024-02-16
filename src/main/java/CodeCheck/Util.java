@@ -8,6 +8,8 @@ public interface Util {
     boolean TEMP_FILE_ENABLED = false; // This is related to TEMP_FILE below.
     String TEMP_FILE = "debugFile.txt"; // If enabled, this file will be deleted and replaced every run instead of using the results files.
     String PATH_TO_RESULTS = "results"; // Directory of where the result files are saved.
+    String LLM_FILE = "ggml-model-gpt4all-falcon-q4_0.bin"; // the LLM located in project root.
+    Boolean RUN_WITH_LLM = false; // run with llm needs a model defined and will take more computing power.
     String PATH_TO_CODE = "util"; // Directory path to where the code is to be scanned.
 
     // Styling

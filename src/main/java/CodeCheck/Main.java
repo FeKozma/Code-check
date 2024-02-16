@@ -16,13 +16,24 @@ public class Main {
     private static void runModel() throws Exception {
         File baseCodeDir = new File(Util.PATH_TO_CODE);
 
-        if (!baseCodeDir.isDirectory()) baseCodeDir.mkdir();
+
 
         // Basically creating the file... // TODO: Only create the file if it's needed and not when it's empty.
         WriteObjectToFile writeToFile = new WriteObjectToFile();
 
         CheckDirectory checkDirectory = new CheckDirectory();
-        ManyFunctions manyFunctions = checkDirectory.checkDirectory(baseCodeDir);
+        ManyFunctions manyFunctions;
+        if (!baseCodeDir.isDirectory()) {
+            Util.warning(Util.PATH_TO_CODE + " is not a directory");
+            if (baseCodeDir.isFile()) {
+                manyFunctions = checkDirectory.checkFile(baseCodeDir);
+            } else {
+                Util.warning("... or a file. Please look over the config.");
+                return;
+            }
+        } else {
+            manyFunctions = checkDirectory.checkDirectory(baseCodeDir);
+        }
 
         checkDirectory.startModel();
 
