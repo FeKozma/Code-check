@@ -26,8 +26,11 @@ public class WriteObjectToFile {
         // Look for the next file to write towards.
         int maxResultsFiles = 100;
         for (int i = 0; i < maxResultsFiles; i++) {
+
             String fileName = Util.TEMP_FILE_ENABLED ? Util.TEMP_FILE : "result_" + i + ".txt";
+
             if (createFile(fileName, i == 0)) break;
+
             if (i == maxResultsFiles - 1) {
                 String errorMessage = "Warning! The maximum amount of result of %d files has been reached! Cannot continue execution.".formatted(maxResultsFiles);
                 Util.error(errorMessage);
@@ -45,7 +48,7 @@ public class WriteObjectToFile {
                 return true;
             } else {
                 if (isFirstTry)
-                    Util.logReduced("The file %s already exists, trying to create the next id... ", file.getPath());
+                    Util.logReduced("The file %s already exist, trying to create the next id... ", file.getPath());
                 else
                     Util.logReduced("%s ... ", file.getPath());
 
@@ -54,13 +57,13 @@ public class WriteObjectToFile {
         } catch (IOException e) {
             Util.error("An error occurred while writing the file %s.".formatted(file.getPath()));
             e.printStackTrace();
-            return true; // An error has occurred -- stop the loop.
+            return true; // An error has occurred -- stop the loop by returning true.
         }
     }
 
     public void write(String obj) {
         try {
-            FileWriter myWriter = new FileWriter(file.getName(), true);
+            FileWriter myWriter = new FileWriter(Util.PATH_TO_RESULTS + "/" + file.getName(), true);
             myWriter.write(obj.replace("\n", "\\n") + "\n");
             myWriter.close();
         } catch (IOException e) {

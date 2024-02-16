@@ -10,7 +10,7 @@ public interface Util {
     String PATH_TO_RESULTS = "results"; // Directory of where the result files are saved.
     String LLM_FILE = "ggml-model-gpt4all-falcon-q4_0.bin"; // the LLM located in project root.
     Boolean RUN_WITH_LLM = false; // run with llm needs a model defined and will take more computing power.
-    String PATH_TO_CODE = "util"; // Directory path to where the code is to be scanned.
+    String PATH_TO_CODE = "src/test/resources/"; // Directory path to where the code is to be scanned.
 
     // Styling
     String ANSI_RESET = "\u001B[0m";
