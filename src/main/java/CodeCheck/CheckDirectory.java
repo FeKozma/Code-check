@@ -32,7 +32,7 @@ public class CheckDirectory {
     public ManyFunctions checkFile(File file) {
         Util.trace("ManyFunctions:checkFile -> " + file.getAbsolutePath());
 
-        String patternMethod = "\\s*(protected|private|public)\\s+[a-zA-Z\\>\\<]*\\s([a-zA-Z_]*)\\s*\\((.*\\))";
+        String patternMethod = "\\s*(protected|private|public)\\s+[a-zA-Z\\>\\<]*\\s*([a-zA-Z0-9_]*)\\s*\\((.*\\))";
         ManyFunctions manyFunctions = new ManyFunctions(llm);
 
         try {

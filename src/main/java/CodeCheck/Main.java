@@ -16,8 +16,6 @@ public class Main {
     private static void runModel() throws Exception {
         File baseCodeDir = new File(Util.PATH_TO_CODE);
 
-
-
         // Basically creating the file... // TODO: Only create the file if it's needed and not when it's empty.
         WriteObjectToFile writeToFile = new WriteObjectToFile();
 
@@ -52,13 +50,5 @@ public class Main {
         }
 
         checkDirectory.stopModel();
-    }
-
-    private void createCodePath() {
-        // Create code directory if it doesn't exist.
-        if (!(new File(Util.PATH_TO_CODE).exists())) {
-            new File(Util.PATH_TO_CODE).mkdir();
-            Util.log("Created directory %s...", Util.PATH_TO_CODE);
-        }
     }
 }
