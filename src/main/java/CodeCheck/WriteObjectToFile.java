@@ -6,28 +6,31 @@ import java.io.IOException;
 
 public class WriteObjectToFile {
 
+    private String PATH_TO_RESULTS = ConfigInterface.conf.getString("PATH_TO_RESULTS");
+    private Boolean TEMP_FILE_ENABLED = ConfigInterface.conf.getBoolean("TEMP_FILE_ENABLED");
+    private String TEMP_FILE =  ConfigInterface.conf.getString("TEMP_FILE");
     File file;
 
     public WriteObjectToFile() throws Exception {
 
         // Delete the temp result file if enabled and if it exists.
-        if (Util.TEMP_FILE_ENABLED) {
-            File tempFile = new File(Util.PATH_TO_RESULTS + "/" + Util.TEMP_FILE);
+        if (TEMP_FILE_ENABLED) {
+            File tempFile = new File(PATH_TO_RESULTS + "/" + TEMP_FILE);
             if (tempFile.exists()) tempFile.delete();
-            Util.log("Debug mode enabled, deleting the temporary file %s before continuing... ".formatted(Util.PATH_TO_RESULTS + "/" + Util.TEMP_FILE));
+            Util.log("Debug mode enabled, deleting the temporary file %s before continuing... ".formatted(PATH_TO_RESULTS + "/" + TEMP_FILE));
         }
 
         // Create results directory if it doesn't exist.
-        if (!(new File(Util.PATH_TO_RESULTS).exists())) {
-            new File(Util.PATH_TO_RESULTS).mkdir();
-            Util.log("Created directory %s...", Util.PATH_TO_RESULTS);
+        if (!(new File(PATH_TO_RESULTS).exists())) {
+            new File(PATH_TO_RESULTS).mkdir();
+            Util.log("Created directory %s...", PATH_TO_RESULTS);
         }
 
         // Look for the next file to write towards.
         int maxResultsFiles = 100;
         for (int i = 0; i < maxResultsFiles; i++) {
 
-            String fileName = Util.TEMP_FILE_ENABLED ? Util.TEMP_FILE : "result_" + i + ".txt";
+            String fileName = TEMP_FILE_ENABLED ? TEMP_FILE : "result_" + i + ".txt";
 
             if (createFile(fileName, i == 0)) break;
 
@@ -41,7 +44,7 @@ public class WriteObjectToFile {
 
     private boolean createFile(String fileName, boolean isFirstTry) {
         try {
-            file = new File(Util.PATH_TO_RESULTS + "/" + fileName);
+            file = new File(PATH_TO_RESULTS + "/" + fileName);
 
             if (file.createNewFile()) {
                 Util.log(String.format("File created: %s", file.getPath()));
@@ -63,7 +66,7 @@ public class WriteObjectToFile {
 
     public void write(String obj) {
         try {
-            FileWriter myWriter = new FileWriter(Util.PATH_TO_RESULTS + "/" + file.getName(), true);
+            FileWriter myWriter = new FileWriter(PATH_TO_RESULTS + "/" + file.getName(), true);
             myWriter.write(obj.replace("\n", "\\n") + "\n");
             myWriter.close();
         } catch (IOException e) {

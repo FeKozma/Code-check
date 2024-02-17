@@ -17,7 +17,7 @@ public class LLM {
 
     public void initModel() {
         runIfConfig(() -> {
-            java.nio.file.Path modelPath = java.nio.file.Path.of(Util.LLM_FILE);
+            java.nio.file.Path modelPath = java.nio.file.Path.of(ConfigInterface.conf.getString("LLM_FILE"));
             if (!Files.exists(modelPath)) {
                 Util.error("LLM_FILE expected to be configed");
                 throw new RuntimeException("LLM_FILE not found");
@@ -57,7 +57,7 @@ public class LLM {
     }
 
     private <T> Optional<T> runIfConfig(Supplier<T> supplier) {
-        if (Util.RUN_WITH_LLM) {
+        if (ConfigInterface.conf.getBoolean("RUN_WITH_LLM")) {
             return Optional.of(supplier.get());
         }
         return Optional.empty();

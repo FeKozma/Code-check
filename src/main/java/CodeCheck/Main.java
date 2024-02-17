@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.List;
 
 public class Main {
-
     public static void main(String[] args) throws Exception {
         Util.log("Starting up...", "%n");
 
@@ -14,7 +13,8 @@ public class Main {
     }
 
     private static void runModel() throws Exception {
-        File baseCodeDir = new File(Util.PATH_TO_CODE);
+        String PATH_TO_CODE = ConfigInterface.conf.getString("PATH_TO_CODE");
+        File baseCodeDir = new File(PATH_TO_CODE);
 
         // Basically creating the file... // TODO: Only create the file if it's needed and not when it's empty.
         WriteObjectToFile writeToFile = new WriteObjectToFile();
@@ -22,7 +22,7 @@ public class Main {
         CheckDirectory checkDirectory = new CheckDirectory();
         ManyFunctions manyFunctions;
         if (!baseCodeDir.isDirectory()) {
-            Util.warning(Util.PATH_TO_CODE + " is not a directory");
+            Util.warning(PATH_TO_CODE + " is not a directory");
             if (baseCodeDir.isFile()) {
                 manyFunctions = checkDirectory.checkFile(baseCodeDir);
             } else {
