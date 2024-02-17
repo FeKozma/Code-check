@@ -9,21 +9,22 @@ public interface ConfigInterface {
 
     class Config {
         enum LoggingLevel {
-            NONE (0),
+            NONE(0),
             ERROR(1),
-            ERR(1),
-            E(1),
+            ERR(ERROR.lvl),
+            E(ERROR.lvl),
             WARNING(2),
-            WARN(2),
-            W(2),
-            DEBUG(3),
-            D(3),
-            INFO(4),
-            I(4),
+            WARN(WARNING.lvl),
+            W(WARNING.lvl),
+            INFO(3),
+            I(INFO.lvl),
+            DEBUG(4),
+            D(DEBUG.lvl),
             TRACE(5),
-            T(5);
+            T(TRACE.lvl);
 
-            private int lvl;
+            private final int lvl;
+
             public Boolean logOn(LoggingLevel lvl) {
                 return lvl.lvl <= this.lvl;
             }
@@ -32,12 +33,14 @@ public interface ConfigInterface {
                 lvl = i;
             }
         }
+
         Properties appProps;
+
         public Config() {
             this.appProps = new Properties();
 
-
-            String rootPath = Thread.currentThread().getContextClassLoader().getResource("").getPath().replaceAll("(.*Code-check/).*", "$1");
+            String rootDirRegex = "(.*Code-check/).*";
+            String rootPath = Thread.currentThread().getContextClassLoader().getResource("").getPath().replaceAll(rootDirRegex, "$1");
 
             String appConfigPath = rootPath + "config.properties";
             if (new File(rootPath + "local-config.properties").exists()) {
@@ -50,7 +53,8 @@ public interface ConfigInterface {
             try {
                 appProps.load(new FileInputStream(appConfigPath));
             } catch (Exception e) {
-                Util.error(e.getMessage());
+                throw new NullPointerException("Could not find any matching expression for root path \"%s\".\n%s"
+                        .formatted(rootDirRegex, e.getMessage()));
             }
         }
 

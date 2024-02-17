@@ -6,9 +6,9 @@ import java.io.IOException;
 
 public class WriteObjectToFile {
 
-    private String PATH_TO_RESULTS = ConfigInterface.conf.getString("PATH_TO_RESULTS");
-    private Boolean TEMP_FILE_ENABLED = ConfigInterface.conf.getBoolean("TEMP_FILE_ENABLED");
-    private String TEMP_FILE =  ConfigInterface.conf.getString("TEMP_FILE");
+    private final String PATH_TO_RESULTS = ConfigInterface.conf.getString("PATH_TO_RESULTS");
+    private final boolean TEMP_FILE_ENABLED = ConfigInterface.conf.getBoolean("TEMP_FILE_ENABLED");
+    private final String TEMP_FILE =  ConfigInterface.conf.getString("TEMP_FILE");
     File file;
 
     public WriteObjectToFile() throws Exception {
