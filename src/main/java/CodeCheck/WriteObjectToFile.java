@@ -7,6 +7,7 @@ import java.io.IOException;
 public class WriteObjectToFile {
 
     private final String PATH_TO_RESULTS = ConfigInterface.conf.getString("PATH_TO_RESULTS");
+    private final String RESULT_NAME_PREFIX = ConfigInterface.conf.getString("RESULT_NAME_PREFIX");
     private final boolean TEMP_FILE_ENABLED = ConfigInterface.conf.getBoolean("TEMP_FILE_ENABLED");
     private final String TEMP_FILE =  ConfigInterface.conf.getString("TEMP_FILE");
     File file;
@@ -30,7 +31,13 @@ public class WriteObjectToFile {
         int maxResultsFiles = 100;
         for (int i = 0; i < maxResultsFiles; i++) {
 
-            String fileName = TEMP_FILE_ENABLED ? TEMP_FILE : "result_" + i + ".txt";
+            String prefix = RESULT_NAME_PREFIX.isEmpty()
+                    ? "result_" + i // If nothing is set, use the default value.
+                    : RESULT_NAME_PREFIX.contains("{nr}") // If {nr} exist, replace all with the counter value.
+                    ? RESULT_NAME_PREFIX.replaceAll("\\{nr}", String.valueOf(i))
+                    : RESULT_NAME_PREFIX + i; // If {nr} doesn't exist, add the counter to the end of prefix.
+
+            String fileName = TEMP_FILE_ENABLED ? TEMP_FILE : prefix + ".txt";
 
             if (createFile(fileName, i == 0)) break;
 
