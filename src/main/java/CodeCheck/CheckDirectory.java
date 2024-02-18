@@ -3,13 +3,24 @@ package CodeCheck;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
+import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class CheckDirectory {
 
     LLM llm = new LLM();
+
+    private final List<Pattern> EXCLUDED_PATHS = ConfigInterface
+            .conf
+            .getList("EXCLUDED_PATHS")
+            .stream()
+            .filter(Predicate.not(String::isEmpty))
+            .map(path -> "((?i)" + path.trim() + "(?-i))")
+            .map(Pattern::compile)
+            .toList();
 
     public void startModel() {
         llm.initModel();
@@ -22,11 +33,26 @@ public class CheckDirectory {
     public ManyFunctions checkDirectory(File dir) {
 
         return Arrays.stream(dir.listFiles()).map((file) -> {
-            if (file.isDirectory()) return checkDirectory(file);
-            else if (file.getName().endsWith(".java")) return checkFile(file);
+            if (file.isDirectory() && checkExcluded(file)) return checkDirectory(file);
+            else if (file.getName().endsWith(".java") && checkExcluded(file)) return checkFile(file);
             else Log.trace("Skipping file: " + file.getName());
             return new ManyFunctions(llm);
         }).reduce(new ManyFunctions(llm), ManyFunctions::new);
+    }
+
+    public boolean checkExcluded(File file) {
+        if (EXCLUDED_PATHS.isEmpty()) return true;
+
+        for (Pattern pattern : EXCLUDED_PATHS) {
+            final Matcher m = pattern.matcher(file.getPath());
+
+            if (m.find()) {
+                Log.log("File excluded: %s", file.getPath());
+                return false;
+            }
+        }
+
+        return true;
     }
 
     public ManyFunctions checkFile(File file) {

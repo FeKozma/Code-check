@@ -51,9 +51,6 @@ public class OneFunction {
     }
 
     private String removeLogAndCommentsAndMore() {
-
-        return this.content.stream().filter(s -> !s.matches("^\\s*\\/\\/")).filter(s -> s.replaceAll(" ", "").length() < 2).collect(Collectors.joining("\n"));
+        return this.content.stream().filter(s -> !s.matches("^\\s*\\/\\/")).filter(s -> s.replace(" ", "").length() < 2).collect(Collectors.joining("\n"));
     }
-
-
 }

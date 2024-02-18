@@ -46,9 +46,9 @@ public class LLM {
             return true;
         });
 
-        int[] calcTime = Log.getCalcDurationTime(startTime);
+        int[] formattedTime = Log.getFormattedDurationTime(startTime);
         Log.log(String.format("This LLM run completed in %02d hours, %02d minutes, %02d seconds and %02d milliseconds.",
-                calcTime[0], calcTime[1], calcTime[2], calcTime[3]));
+                formattedTime[0], formattedTime[1], formattedTime[2], formattedTime[3]));
     }
 
     public String getAnswer(String question) {
