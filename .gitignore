@@ -43,3 +43,4 @@ bin/
 ### Project Settings ###
 /results/
 /test-results/
+test-config.properties
