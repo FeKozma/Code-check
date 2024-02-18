@@ -6,3 +6,9 @@ Do you have a problem with duplicated functions in your java project? Here is th
 * query an LLM on complicated situations were 2 functions could be similar
 * lots of configuration
 * it even has a test!
+----------------
+*Please setup before commit:*
+``` bash
+cp pre-commit.tests .git/hooks/pre-commit
+cp pre-commit.tests .git/hooks/pre-push
+```
