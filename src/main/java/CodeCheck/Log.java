@@ -2,7 +2,7 @@ package CodeCheck;
 
 import java.time.LocalDateTime;
 
-public interface Util {
+public interface Log {
 
     // Styling
     String ANSI_RESET = "\u001B[0m";

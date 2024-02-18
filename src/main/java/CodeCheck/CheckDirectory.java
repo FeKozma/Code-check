@@ -24,13 +24,13 @@ public class CheckDirectory {
         return Arrays.stream(dir.listFiles()).map((file) -> {
             if (file.isDirectory()) return checkDirectory(file);
             else if (file.getName().endsWith(".java")) return checkFile(file);
-            else Util.trace("Skipping file: " + file.getName());
+            else Log.trace("Skipping file: " + file.getName());
             return new ManyFunctions(llm);
         }).reduce(new ManyFunctions(llm), ManyFunctions::new);
     }
 
     public ManyFunctions checkFile(File file) {
-        Util.trace("ManyFunctions:checkFile -> " + file.getAbsolutePath());
+        Log.trace("ManyFunctions:checkFile -> " + file.getAbsolutePath());
 
         String patternMethod = "\\s*(protected|private|public)\\s+[a-zA-Z\\>\\<]*\\s*([a-zA-Z0-9_]*)\\s*\\((.*\\))";
         ManyFunctions manyFunctions = new ManyFunctions(llm);
@@ -55,7 +55,7 @@ public class CheckDirectory {
                         manyFunctions.commitFile(file.getName());
                         manyFunctions.commitLine(lineNumber);
 
-                        Util.debug("Function: " +
+                        Log.debug("Function: " +
                                 manyFunctions.commit.name + " in " +
                                 manyFunctions.commit.file + ":" +
                                 manyFunctions.commit.line + " with " +
@@ -67,11 +67,11 @@ public class CheckDirectory {
 
                     nrBrackets += countBrackets(data);
                     if (!(data.startsWith("//") || data.startsWith("Log") || data.startsWith("Flog") || data.isEmpty() || data.length() <= 1)) {
-                        Util.trace(data);
+                        Log.trace(data);
                     }
                     if (nrBrackets == 0) {
                         manyFunctions.push();
-                        Util.trace("End of function.");
+                        Log.trace("End of function.");
                         nrBrackets = null;
                     }
                 }
@@ -79,7 +79,7 @@ public class CheckDirectory {
             }
             myReader.close();
         } catch (FileNotFoundException e) {
-            Util.error("An error occurred.");
+            Log.error("An error occurred.");
             e.printStackTrace();
         }
         return manyFunctions;

@@ -18,13 +18,13 @@ public class WriteObjectToFile {
         if (TEMP_FILE_ENABLED) {
             File tempFile = new File(PATH_TO_RESULTS + "/" + TEMP_FILE);
             if (tempFile.exists()) tempFile.delete();
-            Util.log("Debug mode enabled, deleting the temporary file %s before continuing... ".formatted(PATH_TO_RESULTS + "/" + TEMP_FILE));
+            Log.log("Debug mode enabled, deleting the temporary file %s before continuing... ".formatted(PATH_TO_RESULTS + "/" + TEMP_FILE));
         }
 
         // Create results directory if it doesn't exist.
         if (!(new File(PATH_TO_RESULTS).exists())) {
             new File(PATH_TO_RESULTS).mkdir();
-            Util.log("Created directory %s...", PATH_TO_RESULTS);
+            Log.log("Created directory %s...", PATH_TO_RESULTS);
         }
 
         // Look for the next file to write towards.
@@ -43,7 +43,7 @@ public class WriteObjectToFile {
 
             if (i == maxResultsFiles - 1) {
                 String errorMessage = "Warning! The maximum amount of result of %d files has been reached! Cannot continue execution.".formatted(maxResultsFiles);
-                Util.error(errorMessage);
+                Log.error(errorMessage);
                 throw new Exception(errorMessage);
             }
         }
@@ -54,18 +54,18 @@ public class WriteObjectToFile {
             file = new File(PATH_TO_RESULTS + "/" + fileName);
 
             if (file.createNewFile()) {
-                Util.log(String.format("File created: %s", file.getPath()));
+                Log.log(String.format("File created: %s", file.getPath()));
                 return true;
             } else {
                 if (isFirstTry)
-                    Util.logReduced("The file %s already exist, trying to create the next id... ", file.getPath());
+                    Log.logReduced("The file %s already exist, trying to create the next id... ", file.getPath());
                 else
-                    Util.logReduced("%s ... ", file.getPath());
+                    Log.logReduced("%s ... ", file.getPath());
 
                 return false;
             }
         } catch (IOException e) {
-            Util.error("An error occurred while writing the file %s.".formatted(file.getPath()));
+            Log.error("An error occurred while writing the file %s.".formatted(file.getPath()));
             e.printStackTrace();
             return true; // An error has occurred -- stop the loop by returning true.
         }
@@ -77,7 +77,7 @@ public class WriteObjectToFile {
             myWriter.write(obj.replace("\n", "\\n") + "\n");
             myWriter.close();
         } catch (IOException e) {
-            Util.error("An error occurred while writing to the file %s.".formatted(file.getPath()));
+            Log.error("An error occurred while writing to the file %s.".formatted(file.getPath()));
             e.printStackTrace();
         }
     }

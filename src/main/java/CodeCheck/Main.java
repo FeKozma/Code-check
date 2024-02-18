@@ -5,11 +5,11 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-        Util.log("Starting up...", "%n");
+        Log.log("Starting up...", "%n");
 
         runModel();
 
-        Util.log("Shutting down...", "%n");
+        Log.log("Shutting down...", "%n");
     }
 
     private static void runModel() throws Exception {
@@ -22,11 +22,11 @@ public class Main {
         CheckDirectory checkDirectory = new CheckDirectory();
         ManyFunctions manyFunctions;
         if (!baseCodeDir.isDirectory()) {
-            Util.warning(PATH_TO_CODE + " is not a directory");
+            Log.warning(PATH_TO_CODE + " is not a directory");
             if (baseCodeDir.isFile()) {
                 manyFunctions = checkDirectory.checkFile(baseCodeDir);
             } else {
-                Util.warning("... or a file. Please look over the config.");
+                Log.warning("... or a file. Please look over the config.");
                 return;
             }
         } else {
