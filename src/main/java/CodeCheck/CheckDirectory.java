@@ -95,6 +95,7 @@ public class CheckDirectory {
                     if (!(data.startsWith("//") || data.startsWith("Log") || data.startsWith("Flog") || data.isEmpty() || data.length() <= 1)) {
                         Log.trace(data);
                     }
+
                     if (nrBrackets == 0) {
                         manyFunctions.push();
                         Log.trace("End of function.");

@@ -22,7 +22,7 @@ public interface Util {
                 return null;
             }
         } catch (IOException e) {
-            Log.error("An error occurred while writing the file %s.".formatted(file.getPath()));
+            Log.error("An error occurred while trying to create the file %s.".formatted(file.getPath()));
             e.printStackTrace();
             return null; // An error has occurred -- stop the loop by returning null.
         }
