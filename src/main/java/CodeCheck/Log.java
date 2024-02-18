@@ -80,7 +80,7 @@ public interface Log {
      * @param startTime Input the start time.
      * @return An integer array of time the duration in HH:MM:SS:MS. 0 = h, 1 = m, 2 = s, 3 = ms
      */
-    static int[] getCalcDurationTime(long startTime) {
+    static int[] getFormattedDurationTime(long startTime) {
         long millis = (System.currentTimeMillis() - startTime);
         int seconds = (int) millis / 1000;
         int minutes = (seconds % 3600) / 60;

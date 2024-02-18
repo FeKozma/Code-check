@@ -2,6 +2,8 @@ package CodeCheck;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Properties;
 
 public interface ConfigInterface {
@@ -64,6 +66,17 @@ public interface ConfigInterface {
 
         public Boolean getBoolean(String key) {
             return  appProps.get(key).toString().equalsIgnoreCase("true");
+        }
+
+        public List<String> getList(String key) {
+            String sList = getString(key);
+            sList = sList
+                    .substring(1)
+                    .substring(0, sList.length() - 2);
+            return Arrays
+                    .stream(sList.split(","))
+                    .map(String::strip)
+                    .toList();
         }
 
         public LoggingLevel getLogLvl() {

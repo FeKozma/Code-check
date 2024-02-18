@@ -28,7 +28,8 @@ public class WriteObjectToFile {
         }
 
         // Look for the next file to write towards.
-        int maxResultsFiles = 100;
+        final int maxResultsFiles = 100;
+
         for (int i = 0; i < maxResultsFiles; i++) {
 
             String prefix = RESULT_NAME_PREFIX.isEmpty()
