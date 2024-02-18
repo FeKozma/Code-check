@@ -13,6 +13,6 @@ public class CheckDirectoryTest {
         File file = new File(getClass().getResource("checkDirectoryTest1").getFile());
         ManyFunctions functions = new CheckDirectory().checkDirectory(file);
 
-        assertEquals(3, functions.oneFunctions.size());
+        assertEquals(4, functions.oneFunctions.size());
     }
 }

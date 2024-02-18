@@ -1,9 +1,9 @@
 package CodeCheck;
 
-import java.io.File;
-import java.io.FileInputStream;
+import java.io.*;
 import java.nio.file.FileSystems;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
 
@@ -41,14 +41,15 @@ public interface ConfigInterface {
 
         public Config() {}
 
-        public void loadConfig() {
+        public void loadConfig() throws IOException {
             this.appProps = new Properties();
 
             String rootDirRegex = "(.*Code-check/).*";
             String rootPath = FileSystems.getDefault().getPath("").toAbsolutePath().toString() + "/";
 
             String appConfigPath = rootPath + "config.properties";
-            if (new File(rootPath + "test-config.properties").exists()) {
+            File test_conf = new File(rootPath + "test-config.properties");
+            if (test_conf.exists() && countLines(test_conf) > 1) {
                 appConfigPath = rootPath + "test-config.properties";
 
             } else if (new File(rootPath + "local-config.properties").exists()) {
@@ -74,7 +75,7 @@ public interface ConfigInterface {
 
         public List<String> getList(String key) {
             String value = getString(key);
-
+            if (value == null) return Collections.emptyList();
             return Arrays
                     .stream(value.substring(1, value.length() - 1).split(","))
                     .map(String::strip)
@@ -85,6 +86,14 @@ public interface ConfigInterface {
             String loggingLevel = getString("LOGGING_LEVEL");
             if (loggingLevel == null) loggingLevel = "DEBUG";
             return LoggingLevel.valueOf(loggingLevel);
+        }
+
+        private int countLines(File file) throws IOException {
+            BufferedReader reader = new BufferedReader(new FileReader(file));
+            int lines = 0;
+            while (reader.readLine() != null) lines++;
+            reader.close();
+            return lines;
         }
     }
 }
