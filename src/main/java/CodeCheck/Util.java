@@ -73,6 +73,4 @@ public interface Util {
     static void logReduced(String msg, Object... formatting) {
         logReduced(String.format(msg, formatting), ConfigInterface.Config.LoggingLevel.INFO, false);
     }
-
-
 }

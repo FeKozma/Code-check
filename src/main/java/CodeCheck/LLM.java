@@ -19,8 +19,8 @@ public class LLM {
         runIfConfig(() -> {
             java.nio.file.Path modelPath = java.nio.file.Path.of(ConfigInterface.conf.getString("LLM_FILE"));
             if (!Files.exists(modelPath)) {
-                Util.error("LLM_FILE expected to be configed");
-                throw new RuntimeException("LLM_FILE not found");
+                Util.error("LLM_FILE expected to be configured.");
+                throw new RuntimeException("LLM_FILE not found.");
             }
 
             model = new LLModel(modelPath);
@@ -37,8 +37,8 @@ public class LLM {
             try {
                 model.close();
             } catch (Exception e) {
-                Util.error("LLM not closing");
-                throw new RuntimeException("LLM not closing", e);
+                Util.error("LLM is not closing...");
+                throw new RuntimeException("LLM is not closing...", e);
             }
             return true;
         });
@@ -47,9 +47,9 @@ public class LLM {
     public String getAnswer(String question) {
         return runIfConfig(() -> {
             String answer = model.chatCompletion(createMessage(question), config).choices.toString();
-            System.out.println(answer);
+            Util.debug("Answer: " + answer);
             return answer;
-        }).orElse("LLM not configed");
+        }).orElse("LLM has not been configured.");
     }
 
     private List<Map<String, String>> createMessage(String content) {
@@ -62,5 +62,4 @@ public class LLM {
         }
         return Optional.empty();
     }
-
 }

@@ -32,7 +32,7 @@ public class OneFunction {
 
     @Override
     public String toString() {
-        return file + ":" + name + ":" + line;
+        return file + ":" + line + " (" + name + ")";
     }
 
     public String llmComparison(OneFunction other, LLM llm) {

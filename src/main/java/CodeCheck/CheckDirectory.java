@@ -38,22 +38,23 @@ public class CheckDirectory {
         try {
             Scanner myReader = new Scanner(file);
             Integer nrBrackets = null;
-            int linenumber = 0;
-            String funcContent = "";
+            int lineNumber = 0;
+
             while (myReader.hasNextLine()) {
-                linenumber++;
+                lineNumber++;
                 String data = myReader.nextLine();
 
                 if (nrBrackets == null) {
                     final Pattern p = Pattern.compile(patternMethod);
                     final Matcher m = p.matcher(data);
+
                     while (m.find()) {
-                        nrBrackets = 0;
+                        nrBrackets = countBrackets(data);
                         manyFunctions.commitName(m.group(2));
                         manyFunctions.commitNrParameters(m.group(3).split(" ").length / 2);
                         manyFunctions.commitFile(file.getName());
-                        manyFunctions.commitLine(linenumber);
-                        funcContent = "";
+                        manyFunctions.commitLine(lineNumber);
+
                         Util.debug("Function: " +
                                 manyFunctions.commit.name + " in " +
                                 manyFunctions.commit.file + ":" +
@@ -63,15 +64,14 @@ public class CheckDirectory {
                 } else {
                     manyFunctions.commitContentLine(data);
                     data = data.replace(" ", "");
-                    funcContent += data + "\n";
+
                     nrBrackets += countBrackets(data);
                     if (!(data.startsWith("//") || data.startsWith("Log") || data.startsWith("Flog") || data.isEmpty() || data.length() <= 1)) {
-                        Util.log(data);
+                        Util.trace(data);
                     }
                     if (nrBrackets == 0) {
                         manyFunctions.push();
-                        funcContent = "";
-                        Util.debug("End of function.");
+                        Util.trace("End of function.");
                         nrBrackets = null;
                     }
                 }
@@ -79,7 +79,7 @@ public class CheckDirectory {
             }
             myReader.close();
         } catch (FileNotFoundException e) {
-            System.out.println("An error occurred.");
+            Util.error("An error occurred.");
             e.printStackTrace();
         }
         return manyFunctions;
