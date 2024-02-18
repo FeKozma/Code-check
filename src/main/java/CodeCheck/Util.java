@@ -73,4 +73,19 @@ public interface Util {
     static void logReduced(String msg, Object... formatting) {
         logReduced(String.format(msg, formatting), ConfigInterface.Config.LoggingLevel.INFO, false);
     }
+
+    /**
+     * Calculate the duration from the start time and the current time.
+     *
+     * @param startTime Input the start time.
+     * @return An integer array of time the duration in HH:MM:SS:MS. 0 = h, 1 = m, 2 = s, 3 = ms
+     */
+    static int[] getCalcDurationTime(long startTime) {
+        long millis = (System.currentTimeMillis() - startTime);
+        int seconds = (int) millis / 1000;
+        int minutes = (seconds % 3600) / 60;
+        int hours = seconds / 3600;
+
+        return new int[]{hours, minutes, seconds % 60, (int) millis % 1000};
+    }
 }

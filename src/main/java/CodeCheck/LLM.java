@@ -14,8 +14,11 @@ public class LLM {
 
     LLModel model;
     LLModel.GenerationConfig config;
+    long startTime;
 
     public void initModel() {
+        startTime = System.currentTimeMillis();
+
         runIfConfig(() -> {
             java.nio.file.Path modelPath = java.nio.file.Path.of(ConfigInterface.conf.getString("LLM_FILE"));
             if (!Files.exists(modelPath)) {
@@ -42,6 +45,10 @@ public class LLM {
             }
             return true;
         });
+
+        int[] calcTime = Util.getCalcDurationTime(startTime);
+        Util.log(String.format("This LLM run completed in %02d hours, %02d minutes, %02d seconds and %02d milliseconds.",
+                calcTime[0], calcTime[1], calcTime[2], calcTime[3]));
     }
 
     public String getAnswer(String question) {
