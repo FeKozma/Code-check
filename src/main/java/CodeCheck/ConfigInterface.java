@@ -2,6 +2,7 @@ package CodeCheck;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.nio.file.FileSystems;
 import java.util.Properties;
 
 public interface ConfigInterface {
@@ -36,18 +37,20 @@ public interface ConfigInterface {
 
         Properties appProps;
 
-        public Config() {
+        public Config() {}
+
+        public void loadConfig() {
             this.appProps = new Properties();
 
             String rootDirRegex = "(.*Code-check/).*";
-            String rootPath = Thread.currentThread().getContextClassLoader().getResource("").getPath().replaceAll(rootDirRegex, "$1");
+            String rootPath = FileSystems.getDefault().getPath("").toAbsolutePath().toString() + "\\";
 
             String appConfigPath = rootPath + "config.properties";
-            if (new File(rootPath + "local-config.properties").exists()) {
-                appConfigPath = rootPath + "local-config.properties";
-
-            } else if (new File(rootPath + "test-config.properties").exists()) {
+            if (new File(rootPath + "test-config.properties").exists()) {
                 appConfigPath = rootPath + "test-config.properties";
+
+            } else if (new File(rootPath + "local-config.properties").exists()) {
+                appConfigPath = rootPath + "local-config.properties";
             }
 
             try {
@@ -59,6 +62,7 @@ public interface ConfigInterface {
         }
 
         public String getString(String key) {
+            if (appProps == null) return null;
             return appProps.get(key).toString();
         }
 
@@ -67,7 +71,9 @@ public interface ConfigInterface {
         }
 
         public LoggingLevel getLogLvl() {
-            return LoggingLevel.valueOf(getString("LOGGING_LEVEL"));
+            String loggingLevel = getString("LOGGING_LEVEL");
+            if (loggingLevel == null) loggingLevel = "DEBUG";
+            return LoggingLevel.valueOf(loggingLevel);
         }
     }
 }

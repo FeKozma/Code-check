@@ -50,35 +50,11 @@ public class WriteObjectToFile {
     }
 
     private boolean createFile(String fileName, boolean isFirstTry) {
-        try {
-            file = new File(PATH_TO_RESULTS + "/" + fileName);
-
-            if (file.createNewFile()) {
-                Log.log(String.format("File created: %s", file.getPath()));
-                return true;
-            } else {
-                if (isFirstTry)
-                    Log.logReduced("The file %s already exist, trying to create the next id... ", file.getPath());
-                else
-                    Log.logReduced("%s ... ", file.getPath());
-
-                return false;
-            }
-        } catch (IOException e) {
-            Log.error("An error occurred while writing the file %s.".formatted(file.getPath()));
-            e.printStackTrace();
-            return true; // An error has occurred -- stop the loop by returning true.
-        }
+        file = Util.createFile(PATH_TO_RESULTS + "/" + fileName, isFirstTry);
+        return file != null;
     }
 
     public void write(String obj) {
-        try {
-            FileWriter myWriter = new FileWriter(PATH_TO_RESULTS + "/" + file.getName(), true);
-            myWriter.write(obj.replace("\n", "\\n") + "\n");
-            myWriter.close();
-        } catch (IOException e) {
-            Log.error("An error occurred while writing to the file %s.".formatted(file.getPath()));
-            e.printStackTrace();
-        }
+        Util.write(PATH_TO_RESULTS + "/" + file.getName(), obj);
     }
 }
