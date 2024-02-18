@@ -32,18 +32,25 @@ public class OneFunction {
 
     @Override
     public String toString() {
-        return file + ":" + name + ":" + line;
+        return file + ":" + line + " (" + name + ")";
     }
 
     public String llmComparison(OneFunction other, LLM llm) {
-        String msg = "There are two Java 8 functions presented to you. If these functions are interchangeable, you must answer YES or NO followed by an explanation. If they are partly similar and could use common functions for part of their execution, you might start your answer with PARTIAL."
-                + getFunctionMsg(1) + other.getFunctionMsg(2);
+
+        Log.debug(this.content.toString());
+        Log.debug(other.content.toString());
+
+        String functionThis = getFunctionMsg(1) + this.content.toString(); // getFunctionMsg(1)
+        String functionOther = getFunctionMsg(2) + other.content.toString(); // other.getFunctionMsg(2)
+
+        String msg = "There are two Java 8 functions presented to you. If these functions are interchangeable, you must answer YES or NO followed by an explanation. If they are partially similar and could use common functions for part of their execution, you might start your answer with PARTIAL." +
+               functionThis + functionOther;
 
         return llm.getAnswer(msg);
     }
 
     private String getFunctionMsg(int nr) {
-        return "\n\n------function " + nr + "------\n" + removeLogAndComments();
+        return "\n\n------function " + nr + "------\n"; // + removeLogAndComments();
     }
 
     private String removeLogAndComments() {
@@ -51,9 +58,6 @@ public class OneFunction {
     }
 
     private String removeLogAndCommentsAndMore() {
-
-        return this.content.stream().filter(s -> !s.matches("^\\s*\\/\\/")).filter(s -> s.replaceAll(" ", "").length() < 2).collect(Collectors.joining("\n"));
+        return this.content.stream().filter(s -> !s.matches("^\\s*\\/\\/")).filter(s -> s.replace(" ", "").length() < 2).collect(Collectors.joining("\n"));
     }
-
-
 }

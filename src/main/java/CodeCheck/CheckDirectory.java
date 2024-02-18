@@ -24,13 +24,13 @@ public class CheckDirectory {
         return Arrays.stream(dir.listFiles()).map((file) -> {
             if (file.isDirectory()) return checkDirectory(file);
             else if (file.getName().endsWith(".java")) return checkFile(file);
-            else Util.trace("Skipping file: " + file.getName());
+            else Log.trace("Skipping file: " + file.getName());
             return new ManyFunctions(llm);
         }).reduce(new ManyFunctions(llm), ManyFunctions::new);
     }
 
     public ManyFunctions checkFile(File file) {
-        Util.trace("ManyFunctions:checkFile -> " + file.getAbsolutePath());
+        Log.trace("ManyFunctions:checkFile -> " + file.getAbsolutePath());
 
         String patternMethod = "\\s*(protected|private|public)\\s+[a-zA-Z\\>\\<]*\\s*([a-zA-Z0-9_]*)\\s*\\((.*\\))";
         ManyFunctions manyFunctions = new ManyFunctions(llm);
@@ -38,23 +38,24 @@ public class CheckDirectory {
         try {
             Scanner myReader = new Scanner(file);
             Integer nrBrackets = null;
-            int linenumber = 0;
-            String funcContent = "";
+            int lineNumber = 0;
+
             while (myReader.hasNextLine()) {
-                linenumber++;
+                lineNumber++;
                 String data = myReader.nextLine();
 
                 if (nrBrackets == null) {
                     final Pattern p = Pattern.compile(patternMethod);
                     final Matcher m = p.matcher(data);
+
                     while (m.find()) {
-                        nrBrackets = 0;
+                        nrBrackets = countBrackets(data);
                         manyFunctions.commitName(m.group(2));
                         manyFunctions.commitNrParameters(m.group(3).split(" ").length / 2);
                         manyFunctions.commitFile(file.getName());
-                        manyFunctions.commitLine(linenumber);
-                        funcContent = "";
-                        Util.debug("Function: " +
+                        manyFunctions.commitLine(lineNumber);
+
+                        Log.debug("Function: " +
                                 manyFunctions.commit.name + " in " +
                                 manyFunctions.commit.file + ":" +
                                 manyFunctions.commit.line + " with " +
@@ -63,15 +64,14 @@ public class CheckDirectory {
                 } else {
                     manyFunctions.commitContentLine(data);
                     data = data.replace(" ", "");
-                    funcContent += data + "\n";
+
                     nrBrackets += countBrackets(data);
                     if (!(data.startsWith("//") || data.startsWith("Log") || data.startsWith("Flog") || data.isEmpty() || data.length() <= 1)) {
-                        Util.log(data);
+                        Log.trace(data);
                     }
                     if (nrBrackets == 0) {
                         manyFunctions.push();
-                        funcContent = "";
-                        Util.debug("End of function.");
+                        Log.trace("End of function.");
                         nrBrackets = null;
                     }
                 }
@@ -79,7 +79,7 @@ public class CheckDirectory {
             }
             myReader.close();
         } catch (FileNotFoundException e) {
-            System.out.println("An error occurred.");
+            Log.error("An error occurred.");
             e.printStackTrace();
         }
         return manyFunctions;

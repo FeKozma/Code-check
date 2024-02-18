@@ -14,19 +14,28 @@ public class LLM {
 
     LLModel model;
     LLModel.GenerationConfig config;
+    long startTime;
 
     public void initModel() {
+        startTime = System.currentTimeMillis();
+
         runIfConfig(() -> {
-            java.nio.file.Path modelPath = java.nio.file.Path.of(Util.LLM_FILE);
+            java.nio.file.Path modelPath = java.nio.file.Path.of(ConfigInterface.conf.getString("LLM_FILE"));
             if (!Files.exists(modelPath)) {
-                Util.error("LLM_FILE expected to be configed");
-                throw new RuntimeException("LLM_FILE not found");
+                Log.error("LLM_FILE expected to be configured.");
+                throw new RuntimeException("LLM_FILE not found.");
             }
 
             model = new LLModel(modelPath);
 
+            model.setThreadCount(6);
+            Log.debug("Thread Count: " + model.threadCount());
+
             config = LLModel.config()
-                    .withNPredict(4096).build();
+                    .withNPredict(64)
+                    .withNBatch(128)
+                    .build();
+
             return true;
         });
 
@@ -37,19 +46,26 @@ public class LLM {
             try {
                 model.close();
             } catch (Exception e) {
-                Util.error("LLM not closing");
-                throw new RuntimeException("LLM not closing", e);
+                Log.error("LLM is not closing...");
+                throw new RuntimeException("LLM is not closing...", e);
             }
             return true;
         });
+
+        int[] calcTime = Log.getCalcDurationTime(startTime);
+        Log.log(String.format("This LLM run completed in %02d hours, %02d minutes, %02d seconds and %02d milliseconds.",
+                calcTime[0], calcTime[1], calcTime[2], calcTime[3]));
     }
 
     public String getAnswer(String question) {
+
+        Log.debug("Question: " + question);
+
         return runIfConfig(() -> {
             String answer = model.chatCompletion(createMessage(question), config).choices.toString();
-            System.out.println(answer);
+            Log.debug("Answer: " + answer);
             return answer;
-        }).orElse("LLM not configed");
+        }).orElse("LLM has not been configured.");
     }
 
     private List<Map<String, String>> createMessage(String content) {
@@ -57,10 +73,9 @@ public class LLM {
     }
 
     private <T> Optional<T> runIfConfig(Supplier<T> supplier) {
-        if (Util.RUN_WITH_LLM) {
+        if (ConfigInterface.conf.getBoolean("RUN_WITH_LLM")) {
             return Optional.of(supplier.get());
         }
         return Optional.empty();
     }
-
 }
