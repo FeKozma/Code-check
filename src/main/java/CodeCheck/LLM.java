@@ -28,8 +28,14 @@ public class LLM {
 
             model = new LLModel(modelPath);
 
+            model.setThreadCount(6);
+            Log.debug("Thread Count: " + model.threadCount());
+
             config = LLModel.config()
-                    .withNPredict(4096).build();
+                    .withNPredict(64)
+                    .withNBatch(128)
+                    .build();
+
             return true;
         });
 
@@ -52,6 +58,9 @@ public class LLM {
     }
 
     public String getAnswer(String question) {
+
+        Log.debug("Question: " + question);
+
         return runIfConfig(() -> {
             String answer = model.chatCompletion(createMessage(question), config).choices.toString();
             Log.debug("Answer: " + answer);
