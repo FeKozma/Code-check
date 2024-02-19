@@ -16,9 +16,9 @@ public class WriteObjectToFile {
 
         // Delete the temp result file if enabled and if it exists.
         if (TEMP_FILE_ENABLED) {
-            File tempFile = new File(PATH_TO_RESULTS + "/" + TEMP_FILE);
+            File tempFile = new File(PATH_TO_RESULTS + File.separator + TEMP_FILE);
             if (tempFile.exists()) tempFile.delete();
-            Log.log("Debug mode enabled, deleting the temporary file %s before continuing... ".formatted(PATH_TO_RESULTS + "/" + TEMP_FILE));
+            Log.log("Debug mode enabled, deleting the temporary file %s before continuing... ".formatted(PATH_TO_RESULTS + File.separator + TEMP_FILE));
         }
 
         // Create results directory if it doesn't exist.
@@ -51,11 +51,11 @@ public class WriteObjectToFile {
     }
 
     private boolean createFile(String fileName, boolean isFirstTry) {
-        file = Util.createFile(PATH_TO_RESULTS + "/" + fileName, isFirstTry);
+        file = Util.createFile(PATH_TO_RESULTS + File.separator + fileName, isFirstTry);
         return file != null;
     }
 
     public void write(String obj) {
-        Util.write(PATH_TO_RESULTS + "/" + file.getName(), obj);
+        Util.write(PATH_TO_RESULTS + File.separator + file.getName(), obj);
     }
 }

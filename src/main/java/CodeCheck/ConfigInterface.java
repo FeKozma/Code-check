@@ -45,7 +45,7 @@ public interface ConfigInterface {
             this.appProps = new Properties();
 
             String rootDirRegex = "(.*Code-check/).*";
-            String rootPath = FileSystems.getDefault().getPath("").toAbsolutePath().toString() + "/";
+            String rootPath = FileSystems.getDefault().getPath("").toAbsolutePath().toString() + File.separator;
 
             String appConfigPath = rootPath + "config.properties";
             File test_conf = new File(rootPath + "test-config.properties");

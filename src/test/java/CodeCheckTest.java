@@ -14,34 +14,38 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CodeCheckTest {
 
-    private String testConfPath = FileSystems.getDefault()
-            .getPath("").toAbsolutePath() + "\\test-config.properties";
+    private final String testConfPath = FileSystems.getDefault()
+            .getPath("").toAbsolutePath() + File.separator + "test-config.properties";
 
-    private String resultFolder = "test-results";
-    private String resultNamePrefix = "test-result_{nr}";
-    private String resultFileName = "test-result_0.txt";
+    private final String resultFolder = "test-results";
+    private final String resultNamePrefix = "test-result_{nr}";
+    private final String resultFileName = "test-result_0.txt";
+
     @Test
     public void executeTest() throws Exception {
         delete(FileSystems.getDefault()
-                .getPath("").toAbsolutePath() + "\\" +resultFolder);
+                .getPath("").toAbsolutePath() + File.separator + resultFolder);
+
         Util.createFile(testConfPath, true);
         writeConf();
         CodeCheck.execute();
 
-        assertEquals(2, readResult().split("\n").length-1);
+        assertEquals(2, readResult().split("\n").length - 1);
 
         emptyTestConf();
     }
 
     private void delete(String path) {
         File dir = new File(path);
-        Arrays.stream(dir.listFiles()).forEach(File::delete);
-        dir.delete();
-
+        if (dir.exists()) {
+            Arrays.stream(dir.listFiles()).forEach(File::delete);
+            dir.delete();
+        }
     }
 
     private void writeConf() {
-        List<String> conf = List.of("LOGGING_LEVEL=DEBUG",
+        List<String> conf = List.of(
+                "LOGGING_LEVEL=DEBUG",
                 "TEMP_FILE_ENABLED=false",
                 "TEMP_FILE=debugFile.txt",
                 "PATH_TO_RESULTS=" + resultFolder,
@@ -50,8 +54,8 @@ public class CodeCheckTest {
                 "PATH_TO_CODE=src/test/resources/",
                 "EXCLUDED_PATHS=[]");
 
-        Util.write(testConfPath, "# properties used under testing - this file will be overwriten during test", false);
-        conf.stream().forEach(line -> Util.write(testConfPath, line));
+        Util.write(testConfPath, "# properties used under testing - this file will be overwritten during testing", false);
+        conf.forEach(line -> Util.write(testConfPath, line));
     }
 
     private void emptyTestConf() {
@@ -61,7 +65,10 @@ public class CodeCheckTest {
     private String readResult(){
         String content = "";
         try {
-            String path = FileSystems.getDefault().getPath("").toAbsolutePath() + "\\" + resultFolder + "\\" + resultFileName;
+            String path = FileSystems.getDefault().getPath("").toAbsolutePath() +
+                    File.separator + resultFolder +
+                    File.separator + resultFileName;
+
             File myObj = new File(path);
             Scanner myReader = new Scanner(myObj);
             while (myReader.hasNextLine()) {
