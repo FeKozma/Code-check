@@ -44,23 +44,22 @@ public interface ConfigInterface {
         public void loadConfig() throws IOException {
             this.appProps = new Properties();
 
-            String rootDirRegex = "(.*Code-check/).*";
-            String rootPath = FileSystems.getDefault().getPath("").toAbsolutePath().toString() + File.separator;
+            String rootDirPath = FileSystems.getDefault().getPath("").toAbsolutePath().toString() + File.separator;
+            String appConfigPath = rootDirPath + "config.properties";
+            File test_conf = new File(rootDirPath + "test-config.properties");
 
-            String appConfigPath = rootPath + "config.properties";
-            File test_conf = new File(rootPath + "test-config.properties");
             if (test_conf.exists() && countLines(test_conf) > 1) {
-                appConfigPath = rootPath + "test-config.properties";
+                appConfigPath = rootDirPath + "test-config.properties";
 
-            } else if (new File(rootPath + "local-config.properties").exists()) {
-                appConfigPath = rootPath + "local-config.properties";
+            } else if (new File(rootDirPath + "local-config.properties").exists()) {
+                appConfigPath = rootDirPath + "local-config.properties";
             }
 
             try {
                 appProps.load(new FileInputStream(appConfigPath));
             } catch (Exception e) {
                 throw new NullPointerException("Could not find any matching expression for root path \"%s\".\n%s"
-                        .formatted(rootDirRegex, e.getMessage()));
+                        .formatted(rootDirPath, e.getMessage()));
             }
         }
 
