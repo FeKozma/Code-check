@@ -6,7 +6,7 @@ import java.util.List;
 public interface CodeCheck {
     static void execute() throws Exception {
         ConfigInterface.conf.loadConfig();
-        String PATH_TO_CODE = ConfigInterface.conf.getString("PATH_TO_CODE");
+        String PATH_TO_CODE = Util.checkIfHomePath(ConfigInterface.conf.getString("PATH_TO_CODE"));
         File baseCodeDir = new File(PATH_TO_CODE);
 
         // Basically creating the file... // TODO: Only create the file if it's needed and not when it's empty.

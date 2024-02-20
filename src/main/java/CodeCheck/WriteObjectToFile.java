@@ -4,10 +4,10 @@ import java.io.File;
 
 public class WriteObjectToFile {
 
-    private final String PATH_TO_RESULTS = ConfigInterface.conf.getString("PATH_TO_RESULTS");
+    private final String PATH_TO_RESULTS = Util.checkIfHomePath(ConfigInterface.conf.getString("PATH_TO_RESULTS"));
     private final String RESULT_NAME_PREFIX = ConfigInterface.conf.getString("RESULT_NAME_PREFIX");
     private final boolean TEMP_FILE_ENABLED = ConfigInterface.conf.getBoolean("TEMP_FILE_ENABLED");
-    private final String TEMP_FILE =  ConfigInterface.conf.getString("TEMP_FILE");
+    private final String TEMP_FILE =  Util.checkIfHomePath(ConfigInterface.conf.getString("TEMP_FILE"));
     File file;
 
     public WriteObjectToFile() throws Exception {
@@ -15,7 +15,7 @@ public class WriteObjectToFile {
         // Delete the temp result file if enabled and if it exists.
         if (TEMP_FILE_ENABLED) {
             File tempFile = new File(PATH_TO_RESULTS + File.separator + TEMP_FILE);
-            if (tempFile.exists()) tempFile.delete();
+            if (tempFile.exists() && tempFile.isDirectory()) tempFile.delete();
             Log.log("Debug mode enabled, deleting the temporary file %s before continuing... ".formatted(PATH_TO_RESULTS + File.separator + TEMP_FILE));
         }
 
@@ -23,11 +23,13 @@ public class WriteObjectToFile {
         File file = new File(PATH_TO_RESULTS);
         if (!file.isDirectory()) {
             if (file.mkdirs()) {
-                Log.logColor("Created directory %s...".formatted(file.getAbsolutePath()), Log.Color.PURPLE);
+                Log.log("Created directory %s...".formatted(file.getAbsolutePath()));
             } else {
-                Log.error("Could not create directory %s...".formatted(file.getAbsolutePath()));
-                throw new Exception("Could not create directory %s...".formatted(file.getAbsolutePath()));
+                Log.error("Could not create directory %s.".formatted(file.getAbsolutePath()));
+                throw new Exception("Could not create directory %s.".formatted(file.getAbsolutePath()));
             }
+        } else {
+            Log.log("The results directory `%s` already exists, no need to create it.".formatted(file.getName()));
         }
 
         // Look for the next file to write towards.

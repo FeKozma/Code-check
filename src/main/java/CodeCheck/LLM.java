@@ -20,7 +20,9 @@ public class LLM {
         startTime = System.currentTimeMillis();
 
         runIfConfig(() -> {
-            java.nio.file.Path modelPath = java.nio.file.Path.of(ConfigInterface.conf.getString("LLM_FILE"));
+            java.nio.file.Path modelPath = java.nio.file.Path.of(Util.checkIfHomePath(
+                    ConfigInterface.conf.getString("LLM_FILE")));
+
             if (!Files.exists(modelPath)) {
                 Log.error("LLM_FILE expected to be configured.");
                 throw new RuntimeException("LLM_FILE not found.");
@@ -53,7 +55,7 @@ public class LLM {
         });
 
         int[] formattedTime = Util.getFormattedDurationTime(startTime);
-        Log.log(String.format("This LLM run completed in %02d hours, %02d minutes, %02d seconds and %02d milliseconds.",
+        Log.log(String.format("LLM completed in %02d hours, %02d minutes, %02d seconds and %02d milliseconds.",
                 formattedTime[0], formattedTime[1], formattedTime[2], formattedTime[3]));
     }
 
