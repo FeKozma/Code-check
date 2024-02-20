@@ -29,7 +29,7 @@ jobs:
 
     - name: Archive reports for failed builds
       if: ${{ failure() }}
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: reports
         path: '**/build/reports/ubuntu'
@@ -59,7 +59,7 @@ jobs:
 
       - name: Archive reports for failed builds
         if: ${{ failure() }}
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: reports
           path: '**/build/reports/macos'
@@ -89,7 +89,7 @@ jobs:
 
       - name: Archive reports for failed builds
         if: ${{ failure() }}
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: reports
           path: '**/build/reports/windows'
