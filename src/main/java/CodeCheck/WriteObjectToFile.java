@@ -1,8 +1,6 @@
 package CodeCheck;
 
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 
 public class WriteObjectToFile {
 
@@ -21,10 +19,15 @@ public class WriteObjectToFile {
             Log.log("Debug mode enabled, deleting the temporary file %s before continuing... ".formatted(PATH_TO_RESULTS + File.separator + TEMP_FILE));
         }
 
-        // Create results directory if it doesn't exist.
-        if (!(new File(PATH_TO_RESULTS).exists())) {
-            new File(PATH_TO_RESULTS).mkdir();
-            Log.log("Created directory %s...", PATH_TO_RESULTS);
+        // Create directory if it doesn't exist.
+        File file = new File(PATH_TO_RESULTS);
+        if (!file.isDirectory()) {
+            if (file.mkdirs()) {
+                Log.logColor("Created directory %s...".formatted(file.getAbsolutePath()), Log.Color.PURPLE);
+            } else {
+                Log.error("Could not create directory %s...".formatted(file.getAbsolutePath()));
+                throw new Exception("Could not create directory %s...".formatted(file.getAbsolutePath()));
+            }
         }
 
         // Look for the next file to write towards.

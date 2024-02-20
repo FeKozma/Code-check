@@ -13,6 +13,9 @@ public interface ConfigInterface {
     class Config {
         enum LoggingLevel {
             NONE(0),
+            N(NONE.lvl),
+            OFF(NONE.lvl),
+            O(OFF.lvl),
             ERROR(1),
             ERR(ERROR.lvl),
             E(ERROR.lvl),
@@ -28,7 +31,7 @@ public interface ConfigInterface {
 
             private final int lvl;
 
-            public Boolean logOn(LoggingLevel lvl) {
+            public boolean logOn(LoggingLevel lvl) {
                 return lvl.lvl <= this.lvl;
             }
 

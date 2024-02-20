@@ -5,13 +5,18 @@ import java.time.LocalDateTime;
 public interface Log {
 
     // Styling
-    String ANSI_RESET = "\u001B[0m";
-    String ANSI_RED = "\u001B[31m";
-    String ANSI_GREEN = "\u001B[32m";
-    String ANSI_YELLOW = "\u001B[33m";
-    String ANSI_BLUE = "\u001B[34m";
-    String ANSI_PURPLE = "\u001B[35m";
-
+    enum Color {
+        NONE { @Override public String toString() { return ""; } },
+        RESET { @Override public String toString() { return WHITE.toString(); } },
+        WHITE { @Override public String toString() { return "\u001B[0m"; } },
+        RED { @Override public String toString() { return "\u001B[31m"; } },
+        GREEN { @Override public String toString() { return "\u001B[32m"; } },
+        YELLOW { @Override public String toString() { return "\u001B[033m"; } },
+        BLUE { @Override public String toString() { return "\u001B[34m"; } },
+        PURPLE { @Override public String toString() { return "\u001B[35m"; } },
+        BLACK { @Override public String toString() { return "\u001B[36m"; } },
+        CYAN { @Override public String toString() { return "\u001B[37m"; } };
+    }
 
     static void log(String msg) {
         log(msg, ConfigInterface.Config.LoggingLevel.INFO);
@@ -33,10 +38,14 @@ public interface Log {
         log(msg, ConfigInterface.Config.LoggingLevel.TRACE);
     }
 
-    private static void log(String msg, ConfigInterface.Config.LoggingLevel lvl) {
+    static void log(String msg, ConfigInterface.Config.LoggingLevel lvl) {
         ConfigInterface.Config.LoggingLevel logLvl = ConfigInterface.conf.getLogLvl();
         if (logLvl.logOn(lvl)) {
-            logReduced("[%s] ".formatted(LocalDateTime.now()) + "[" + lvl.name() + "] " + msg + System.lineSeparator(), lvl);
+            logReduced("%s [%s] %s".formatted(
+                    LocalDateTime.now(),
+                    lvl.name(),
+                    msg + System.lineSeparator()),
+                    lvl);
         }
     }
 
@@ -49,17 +58,17 @@ public interface Log {
     }
 
     static void logReduced(String msg, ConfigInterface.Config.LoggingLevel level, boolean newLine) {
-        String colorLevel = switch (level) {
-            case NONE -> "";
-            case INFO, I -> ANSI_RESET;
-            case DEBUG, D -> ANSI_GREEN;
-            case TRACE, T -> ANSI_BLUE;
-            case WARNING, WARN, W -> ANSI_YELLOW;
-            case ERROR, ERR, E -> ANSI_RED;
+        Color colorLevel = switch (level) {
+            case NONE, N, OFF, O -> Color.NONE; // No change in color.
+            case ERROR, ERR, E -> Color.RED;
+            case WARNING, WARN, W -> Color.YELLOW;
+            case INFO, I -> Color.WHITE;
+            case DEBUG, D -> Color.GREEN;
+            case TRACE, T -> Color.BLUE;
         };
 
-        if (newLine) System.out.println(colorLevel + msg + ANSI_RESET);
-        else System.out.print(colorLevel + msg + ANSI_RESET);
+        if (newLine) System.out.println(colorLevel + msg + Color.RESET);
+        else System.out.print(colorLevel + msg + Color.RESET);
     }
 
     static void logReduced(String msg, ConfigInterface.Config.LoggingLevel level) {
@@ -74,18 +83,13 @@ public interface Log {
         logReduced(String.format(msg, formatting), ConfigInterface.Config.LoggingLevel.INFO, false);
     }
 
-    /**
-     * Calculate the duration from the start time and the current time.
-     *
-     * @param startTime Input the start time.
-     * @return An integer array of time the duration in HH:MM:SS:MS. 0 = h, 1 = m, 2 = s, 3 = ms
-     */
-    static int[] getFormattedDurationTime(long startTime) {
-        long millis = (System.currentTimeMillis() - startTime);
-        int seconds = (int) millis / 1000;
-        int minutes = (seconds % 3600) / 60;
-        int hours = seconds / 3600;
-
-        return new int[]{hours, minutes, seconds % 60, (int) millis % 1000};
+    static void logColor(String msg, Color color) {
+        System.out.printf(
+                "%s%s [%s] %s%n",
+                color,
+                LocalDateTime.now(),
+                ConfigInterface.Config.LoggingLevel.INFO,
+                msg
+        );
     }
 }

@@ -52,7 +52,7 @@ public class LLM {
             return true;
         });
 
-        int[] formattedTime = Log.getFormattedDurationTime(startTime);
+        int[] formattedTime = Util.getFormattedDurationTime(startTime);
         Log.log(String.format("This LLM run completed in %02d hours, %02d minutes, %02d seconds and %02d milliseconds.",
                 formattedTime[0], formattedTime[1], formattedTime[2], formattedTime[3]));
     }

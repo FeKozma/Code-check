@@ -40,16 +40,16 @@ rm .git/hooks/pre-commit
 
 ## Getting started with the large language model (LLM) ##
 
-### Download the language model (follow one of these instructions) ###
-Download the bin-file directly from [Hugging Face](https://huggingface.co/):
+### Download the language model ###
+* Either download the bin-file directly from [Hugging Face](https://huggingface.co/):
 [ggml-model-gpt4all-falcon-q4_0.bin](https://huggingface.co/nomic-ai/gpt4all-falcon-ggml/resolve/main/ggml-model-gpt4all-falcon-q4_0.bin?download=true) (4.06 GB)
 
-Choose downloads from the website:
+* Or choose downloads from the website:
 [https://huggingface.co/nomic-ai/gpt4all-falcon-ggml/tree/main](https://huggingface.co/nomic-ai/gpt4all-falcon-ggml/tree/main)
 
-You may also download any other model of your taste and use that one instead.
+* Or you may also download any [other model](https://huggingface.co/models) of your taste and use that one instead.
 
-### Set up the configuration ###
+### Setting up the configuration ###
 
 #### Add model and set the configuration to use LLM ####
 
@@ -61,4 +61,47 @@ You may also download any other model of your taste and use that one instead.
 Run `Main.java` in the project. <!-- TODO: Add run option/script that works "on the go". -->
 
 #### Results ####
-The results will be shown in the `/results/` folder, 
+The results will be shown in the `/results/` folder. By default, the result naming is `result_{nr}` where `{nr}` is represented by a number that increases for each execution.
+
+## Configuration file ##
+You can edit some configuration in `config.properties`.
+
+<details>
+  <summary>
+    Default configuration (click to expand)
+  </summary>
+
+###### *config.properties*
+  ```shell
+LOGGING_LEVEL=INFO
+  # This is related to TEMP_FILE below.
+TEMP_FILE_ENABLED=false
+  # If enabled, this file will be deleted and replaced every run instead of using the results files.
+TEMP_FILE=debugFile.txt
+  # Directory of where the result files are saved. They range from 0 to 99.
+PATH_TO_RESULTS=results
+  # Set this property to a path that should be excluded. It's regex based, so writing [file1, file2] would exclude any file containing file1 and file2.
+EXCLUDED_PATHS=[]
+  # Prefix for the result files.
+RESULT_NAME_PREFIX=result_{nr}
+  # The LLM located in project root.
+LLM_FILE=models/ggml-model-gpt4all-falcon-q4_0.bin
+  # Run with LLM - needs a model defined and will take more computing power and time to run.
+RUN_WITH_LLM=false
+  # Directory path to where the code is to be scanned.
+PATH_TO_CODE=src/test/resources/
+  ```
+</details>
+
+#### LOGGING_LEVEL
+The different options are the following:
+
+|          | FATAL | ERROR | WARNING | INFO | DEBUG | TRACE |
+|----------|:-----:|:-----:|:-------:|:----:|:-----:|:-----:|
+| OFF/NONE |       |       |         |      |       |       |
+| FATAL    |   X   |       |         |      |       |       |
+| ERROR    |   X   |   X   |         |      |       |       |
+| WARNING  |   X   |   X   |    X    |      |       |       |
+| INFO     |   X   |   X   |    X    |  X   |       |       |
+| DEBUG    |   X   |   X   |    X    |  X   |   X   |       |
+| TRACE    |   X   |   X   |    X    |  X   |   X   |   X   |
