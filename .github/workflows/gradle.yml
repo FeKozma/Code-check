@@ -27,6 +27,13 @@ jobs:
     - name: Run tests with Gradle Wrapper
       run: ./gradlew test
 
+    - name: Archive reports for failed builds
+      if: ${{ failure() }}
+      uses: actions/upload-artifact@v3
+      with:
+        name: reports
+        path: '**/build/reports/ubuntu'
+
 
   testing-macos:
     name: Running tests on Mac OS
@@ -50,6 +57,13 @@ jobs:
       - name: Run tests with Gradle Wrapper
         run: ./gradlew test
 
+      - name: Archive reports for failed builds
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: reports
+          path: '**/build/reports/macos'
+
 
   testing-windows:
     name: Running tests on Windows
@@ -72,3 +86,10 @@ jobs:
 
       - name: Run tests with Gradle Wrapper
         run: ./gradlew test
+
+      - name: Archive reports for failed builds
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: reports
+          path: '**/build/reports/windows'
