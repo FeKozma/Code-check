@@ -15,7 +15,7 @@ public interface Log {
         BLUE { @Override public String toString() { return "\u001B[34m"; } },
         PURPLE { @Override public String toString() { return "\u001B[35m"; } },
         BLACK { @Override public String toString() { return "\u001B[36m"; } },
-        CYAN { @Override public String toString() { return "\u001B[37m"; } };
+        GRAY { @Override public String toString() { return "\u001B[37m"; } };
     }
 
     static void log(String msg) {
@@ -57,6 +57,16 @@ public interface Log {
         log(String.format(msg, formatting), level);
     }
 
+    static void log(String msg, Color color) {
+        System.out.printf(
+                "%s%s [%s] %s%n",
+                color,
+                LocalDateTime.now(),
+                ConfigInterface.Config.LoggingLevel.INFO,
+                msg
+        );
+    }
+
     static void logReduced(String msg, ConfigInterface.Config.LoggingLevel level, boolean newLine) {
         Color colorLevel = switch (level) {
             case NONE, N, OFF, O -> Color.NONE; // No change in color.
@@ -81,15 +91,5 @@ public interface Log {
 
     static void logReduced(String msg, Object... formatting) {
         logReduced(String.format(msg, formatting), ConfigInterface.Config.LoggingLevel.INFO, false);
-    }
-
-    static void logColor(String msg, Color color) {
-        System.out.printf(
-                "%s%s [%s] %s%n",
-                color,
-                LocalDateTime.now(),
-                ConfigInterface.Config.LoggingLevel.INFO,
-                msg
-        );
     }
 }
