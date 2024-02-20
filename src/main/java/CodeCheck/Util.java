@@ -57,8 +57,11 @@ public interface Util {
         return new int[]{hours, minutes, seconds % 60, (int) millis % 1000};
     }
 
-    static String checkIfHomePath(String text) {
-        if (text.startsWith("~")) return text.replaceFirst("~", System.getProperty("user.home"));
-        else return text;
+    static String checkIfHomePath(String path) {
+        if (path.startsWith("~")) {
+            return System.getProperty("user.home") + path.substring(1);
+        } else {
+            return path;
+        }
     }
 }
