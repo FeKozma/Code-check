@@ -11,9 +11,9 @@ repositories {
 }
 
 dependencies {
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.10.2")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.9.2")
     testImplementation(platform("org.junit:junit-bom:5.9.2"))
-    testImplementation("org.junit.jupiter:junit-jupiter")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.9.2")
     implementation("com.hexadevlabs:gpt4all-java-binding:1.1.5")
 }
 
