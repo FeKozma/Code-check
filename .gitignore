@@ -1,7 +1,7 @@
 .gradle
 build/
 local-config.properties
-model/
+models/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
