@@ -17,16 +17,19 @@ public class CodeCheckTest {
     private final String testConfPath = FileSystems.getDefault()
             .getPath("").toAbsolutePath() + File.separator + "test-config.properties";
 
-    private final String resultFolder = "test-results";
+    protected static final String resultFolder = "test-results";
     private final String resultNamePrefix = "test-result_{nr}";
     private final String resultFileName = "test-result_0.txt";
 
     @Test
     public void executeTest() throws Exception {
-        delete(FileSystems.getDefault()
-                .getPath("").toAbsolutePath() + File.separator + resultFolder);
+        delete(FileSystems.getDefault().getPath("").toAbsolutePath() + File.separator + resultFolder);
 
-        Util.createFile(testConfPath, true);
+        Log.debug("#--- First: " + FileSystems.getDefault().getPath("").toAbsolutePath() + File.separator + resultFolder);
+        Log.debug("#--- Root: " + FileSystems.getDefault().getRootDirectories() + File.separator + resultFolder);
+        Log.debug("#--- user.dir: " + System.getProperty("user.dir") + File.separator + resultFolder);
+
+        // Util.createFile(testConfPath, true); // TODO: File is not checked. `createFile` can return null as well.
         writeConf();
         CodeCheck.execute();
 

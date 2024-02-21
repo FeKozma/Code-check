@@ -9,21 +9,21 @@ public class WriteObjectToFile {
     private final String RESULT_NAME_PREFIX = ConfigInterface.conf.getString("RESULT_NAME_PREFIX");
     private final boolean TEMP_FILE_ENABLED = ConfigInterface.conf.getBoolean("TEMP_FILE_ENABLED");
     private final String TEMP_FILE =  Util.checkIfHomePath(ConfigInterface.conf.getString("TEMP_FILE"));
-    File file;
+    private File file;
 
     public WriteObjectToFile() throws Exception {
 
         // Delete the temp result file if enabled and if it exists.
         if (TEMP_FILE_ENABLED) {
             File tempFile = new File(PATH_TO_RESULTS + File.separator + TEMP_FILE);
+
             if (tempFile.isFile()) {
                 tempFile.delete();
-                Log.log("Debug mode enabled, deleting the temporary file %s before continuing... ".formatted(PATH_TO_RESULTS + File.separator + TEMP_FILE));
-            }
-            else if (tempFile.isDirectory()) {
-                String errorMsg = "Debug mode enabled - The temporary file '%s' is a directory. Cannot continue!";
-                Log.error(errorMsg);
-                throw new FileNotFoundException(errorMsg);
+                Log.log("Debug mode enabled - deleting the temporary file %s before continuing... ".formatted(tempFile.getPath()));
+            } else if (tempFile.isDirectory()) {
+                String errorMessage = "Debug mode enabled - The temporary file '%s' is a directory. Cannot continue!";
+                Log.error(errorMessage);
+                throw new FileNotFoundException(errorMessage);
             }
         }
 
@@ -33,8 +33,9 @@ public class WriteObjectToFile {
             if (file.mkdirs()) {
                 Log.log("Created directory %s...".formatted(file.getAbsolutePath()));
             } else {
-                Log.error("Could not create directory %s.".formatted(file.getAbsolutePath()));
-                throw new Exception("Could not create directory %s.".formatted(file.getAbsolutePath()));
+                String errorMessage = "Could not create directory %s.".formatted(file.getAbsolutePath());
+                Log.error(errorMessage);
+                throw new Exception(errorMessage);
             }
         } else {
             Log.log("The results directory `%s` already exists, no need to create it.".formatted(file.getName()));
