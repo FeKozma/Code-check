@@ -72,7 +72,7 @@ You can edit some configuration in `config.properties`.
   </summary>
 
 ###### *config.properties*
-  ```shell
+```shell
 LOGGING_LEVEL=INFO
   # This is related to TEMP_FILE below.
 TEMP_FILE_ENABLED=false
@@ -90,18 +90,17 @@ LLM_FILE=models/ggml-model-gpt4all-falcon-q4_0.bin
 RUN_WITH_LLM=false
   # Directory path to where the code is to be scanned.
 PATH_TO_CODE=src/test/resources/
-  ```
+```
 </details>
 
 #### LOGGING_LEVEL
 The different options are the following:
 
-|          | FATAL | ERROR | WARNING | INFO | DEBUG | TRACE |
-|----------|:-----:|:-----:|:-------:|:----:|:-----:|:-----:|
-| OFF/NONE |       |       |         |      |       |       |
-| FATAL    |   X   |       |         |      |       |       |
-| ERROR    |   X   |   X   |         |      |       |       |
-| WARNING  |   X   |   X   |    X    |      |       |       |
-| INFO     |   X   |   X   |    X    |  X   |       |       |
-| DEBUG    |   X   |   X   |    X    |  X   |   X   |       |
-| TRACE    |   X   |   X   |    X    |  X   |   X   |   X   |
+|           | ERROR | WARNING | INFO | DEBUG | TRACE |
+|-----------|:-----:|:-------:|:----:|:-----:|:-----:|
+| OFF/NONE  |       |         |      |       |       |
+| ERROR     |   X   |         |      |       |       |
+| WARNING   |   X   |    X    |      |       |       |
+| INFO      |   X   |    X    |  X   |       |       |
+| DEBUG     |   X   |    X    |  X   |   X   |       |
+| TRACE     |   X   |    X    |  X   |   X   |   X   |
