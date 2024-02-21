@@ -41,10 +41,10 @@ public interface Log {
     static void log(String msg, ConfigInterface.Config.LoggingLevel lvl) {
         ConfigInterface.Config.LoggingLevel logLvl = ConfigInterface.conf.getLogLvl();
         if (logLvl.logOn(lvl)) {
-            logReduced("%s [%s] %s".formatted(
+            logReduced("%s [%s] %s%n".formatted(
                     LocalDateTime.now(),
                     lvl.name(),
-                    msg + System.lineSeparator()),
+                    msg),
                     lvl);
         }
     }

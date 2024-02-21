@@ -40,7 +40,7 @@ public interface ConfigInterface {
             }
         }
 
-        Properties appProps;
+        private Properties appProps;
 
         public Config() {}
 
@@ -53,7 +53,6 @@ public interface ConfigInterface {
 
             if (test_conf.isFile() && countLines(test_conf) > 1) {
                 appConfigPath = rootDirPath + "test-config.properties";
-
             } else if (new File(rootDirPath + "local-config.properties").isFile()) {
                 appConfigPath = rootDirPath + "local-config.properties";
             }
