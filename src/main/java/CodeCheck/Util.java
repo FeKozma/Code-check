@@ -9,15 +9,14 @@ public interface Util {
     static File createFile(String filePath, boolean isFirstTry) {
         File file = new File(filePath);
         try {
-
             if (file.createNewFile()) {
                 Log.log(String.format("File created: %s", file.getPath()));
                 return file;
             } else {
                 if (isFirstTry)
-                    Log.logReduced("The file %s already exist, trying to create the next id... ", file.getPath());
+                    Log.log("The file %s already exist, trying to create the next id... ", file.getPath());
                 else
-                    Log.logReduced("%s ... ", file.getPath());
+                    Log.log("%s ... ", file.getPath());
 
                 return null;
             }
