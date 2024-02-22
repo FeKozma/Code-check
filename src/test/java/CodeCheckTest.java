@@ -14,22 +14,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CodeCheckTest {
 
-    private final String testConfPath = FileSystems.getDefault()
-            .getPath("").toAbsolutePath() + File.separator + "test-config.properties";
-
-    protected static final String resultFolder = "test-results";
+    private final String testConfPath = System.getProperty("user.dir") + File.separator + "test-config.properties";
+    private final String resultFolder = "test-results";
     private final String resultNamePrefix = "test-result_{nr}";
     private final String resultFileName = "test-result_0.txt";
 
     @Test
     public void executeTest() throws Exception {
-        delete(FileSystems.getDefault().getPath("").toAbsolutePath() + File.separator + resultFolder);
+        delete(System.getProperty("user.dir") + File.separator + resultFolder);
 
-        Log.debug("#--- First: " + FileSystems.getDefault().getPath("").toAbsolutePath() + File.separator + resultFolder);
-        Log.debug("#--- Root: " + FileSystems.getDefault().getRootDirectories() + File.separator + resultFolder);
-        Log.debug("#--- user.dir: " + System.getProperty("user.dir") + File.separator + resultFolder);
-
-        // Util.createFile(testConfPath, true); // TODO: File is not checked. `createFile` can return null as well.
         writeConf();
         CodeCheck.execute();
 
@@ -67,26 +60,31 @@ public class CodeCheckTest {
         Util.write(testConfPath, "# empty", false);
     }
 
-    private String readResult(){
+    private String readResult() {
         String content = "";
+
         try {
-            String path = FileSystems.getDefault().getPath("").toAbsolutePath() +
+            String path = System.getProperty("user.dir") +
                     File.separator + resultFolder +
                     File.separator + resultFileName;
 
             File myObj = new File(path);
             Scanner myReader = new Scanner(myObj);
+
             while (myReader.hasNextLine()) {
                 String data = myReader.nextLine();
                 content  += "\n" + data;
                 Log.debug(data);
             }
+
             myReader.close();
+
         } catch (FileNotFoundException e) {
-            Log.error("test result file not found");
+            Log.error("Test result file not found.");
             e.printStackTrace();
             return "";
         }
+
         return content;
     }
 }
