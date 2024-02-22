@@ -5,8 +5,8 @@ on:
     branches: []
 
 jobs:
-  testing:
-    name: Running tests
+  testing-unix:
+    name: Running tests on Ubuntu
 
     runs-on: ubuntu-latest
 
@@ -26,3 +26,70 @@ jobs:
 
     - name: Run tests with Gradle Wrapper
       run: ./gradlew test
+
+    - name: Archive reports for failed builds
+      if: ${{ failure() }}
+      uses: actions/upload-artifact@v4
+      with:
+        name: reports
+        path: '**/build/reports/ubuntu'
+
+
+  testing-macos:
+    name: Running tests on Mac OS
+
+    runs-on: macos-latest
+
+    permissions:
+      contents: read # To fetch code (actions/checkout)
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@417ae3ccd767c252f5661f1ace9f835f9654f2b5 # v3.1.0
+
+      - name: Run tests with Gradle Wrapper
+        run: ./gradlew test
+
+      - name: Archive reports for failed builds
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: reports
+          path: '**/build/reports/macos'
+
+
+  testing-windows:
+    name: Running tests on Windows
+
+    runs-on: windows-latest
+
+    permissions:
+      contents: read # To fetch code (actions/checkout)
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@417ae3ccd767c252f5661f1ace9f835f9654f2b5 # v3.1.0
+
+      - name: Run tests with Gradle Wrapper
+        run: ./gradlew test
+
+      - name: Archive reports for failed builds
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: reports
+          path: '**/build/reports/windows'
