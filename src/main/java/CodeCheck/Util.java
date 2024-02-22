@@ -8,6 +8,7 @@ public interface Util {
 
     static File createFile(String filePath, boolean isFirstTry) {
         File file = new File(filePath);
+
         try {
             if (file.createNewFile()) {
                 Log.log(String.format("File created: %s", file.getPath()));
@@ -30,6 +31,7 @@ public interface Util {
     static void write(String filePath, String msg) {
         write(filePath, msg, true);
     }
+
     static void write(String filePath, String msg, boolean append) {
         try {
             FileWriter myWriter = new FileWriter(filePath, append);

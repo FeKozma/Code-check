@@ -9,9 +9,6 @@ public interface CodeCheck {
         String PATH_TO_CODE = Util.checkIfHomePath(ConfigInterface.conf.getString("PATH_TO_CODE"));
         File baseCodeDir = new File(PATH_TO_CODE);
 
-        // Basically creating the file... // TODO: Only create the file if it's needed and not when it's empty.
-        WriteObjectToFile writeToFile = new WriteObjectToFile();
-
         CheckDirectory checkDirectory = new CheckDirectory();
         ManyFunctions manyFunctions;
         if (!baseCodeDir.isDirectory()) {
@@ -27,6 +24,8 @@ public interface CodeCheck {
         }
 
         checkDirectory.startModel();
+
+        WriteObjectToFile writeToFile = new WriteObjectToFile();
 
         for (int i = 0; i < manyFunctions.oneFunctions.size(); i++) {
             OneFunction oneFunction = manyFunctions.oneFunctions.get(i);
