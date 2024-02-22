@@ -51,10 +51,10 @@ public interface ConfigInterface {
             String appConfigPath = rootDirPath + "config.properties";
             File test_conf = new File(rootDirPath + "test-config.properties");
 
-            if (test_conf.exists() && countLines(test_conf) > 1) {
+            if (test_conf.isFile() && countLines(test_conf) > 1) {
                 appConfigPath = rootDirPath + "test-config.properties";
 
-            } else if (new File(rootDirPath + "local-config.properties").exists()) {
+            } else if (new File(rootDirPath + "local-config.properties").isFile()) {
                 appConfigPath = rootDirPath + "local-config.properties";
             }
 

@@ -37,9 +37,11 @@ public class CodeCheckTest {
 
     private void delete(String path) {
         File dir = new File(path);
-        if (dir.exists()) {
+        if (dir.isDirectory()) {
             Arrays.stream(dir.listFiles()).forEach(File::delete);
             dir.delete();
+        } else {
+            Log.warning("Could not delete '%s' directory as it doesn't exist.".formatted(resultFolder));
         }
     }
 

@@ -23,7 +23,7 @@ public class LLM {
             java.nio.file.Path modelPath = java.nio.file.Path.of(Util.checkIfHomePath(
                     ConfigInterface.conf.getString("LLM_FILE")));
 
-            if (!Files.exists(modelPath)) {
+            if (!Files.exists(modelPath) || Files.isDirectory(modelPath)) {
                 Log.error("LLM_FILE expected to be configured.");
                 throw new RuntimeException("LLM_FILE not found.");
             }
