@@ -5,10 +5,10 @@ import java.io.FileNotFoundException;
 
 public class WriteObjectToFile {
 
-    private final String PATH_TO_RESULTS = Util.checkIfHomePath(ConfigInterface.conf.getString("PATH_TO_RESULTS"));
-    private final String RESULT_NAME_PREFIX = ConfigInterface.conf.getString("RESULT_NAME_PREFIX");
-    private final boolean TEMP_FILE_ENABLED = ConfigInterface.conf.getBoolean("TEMP_FILE_ENABLED");
     private final String TEMP_FILE =  Util.checkIfHomePath(ConfigInterface.conf.getString("TEMP_FILE"));
+    private final boolean TEMP_FILE_ENABLED = ConfigInterface.conf.getBoolean("TEMP_FILE_ENABLED");
+    private final String RESULT_NAME_PREFIX = ConfigInterface.conf.getString("RESULT_NAME_PREFIX");
+    private final String PATH_TO_RESULTS = Util.checkIfHomePath(ConfigInterface.conf.getString("PATH_TO_RESULTS"));
     private File file;
 
     public WriteObjectToFile() throws Exception {
