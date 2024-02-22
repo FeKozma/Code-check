@@ -8,13 +8,12 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Supplier;
 
-
 public class LLM {
     // GPT4All facade classes
 
-    LLModel model;
-    LLModel.GenerationConfig config;
-    long startTime;
+    private LLModel model;
+    private LLModel.GenerationConfig config;
+    private long startTime;
 
     public void initModel() {
         startTime = System.currentTimeMillis();
@@ -23,14 +22,17 @@ public class LLM {
             java.nio.file.Path modelPath = java.nio.file.Path.of(Util.checkIfHomePath(
                     ConfigInterface.conf.getString("LLM_FILE")));
 
-            if (!Files.exists(modelPath) || Files.isDirectory(modelPath)) {
+            if (Files.isDirectory(modelPath)) {
+                Log.error("LLM_FILE not configured correctly - it is a directory, but was expecting a model file. Please change it into a correct model filepath.");
+                throw new RuntimeException("'LLM_FILE' is a directory, model file not found. [Model path: %s]".formatted(modelPath));
+            } else if (!Files.isRegularFile(modelPath) ) {
                 Log.error("LLM_FILE expected to be configured.");
-                throw new RuntimeException("LLM_FILE not found.");
+                throw new RuntimeException("LLM_FILE not found. [Model path: %s]".formatted(modelPath));
             }
 
             model = new LLModel(modelPath);
-
             model.setThreadCount(6);
+
             Log.debug("Thread Count: " + model.threadCount());
 
             config = LLModel.config()
@@ -40,7 +42,6 @@ public class LLM {
 
             return true;
         });
-
     }
 
     public void cleanModel() {
@@ -55,7 +56,7 @@ public class LLM {
         });
 
         int[] formattedTime = Util.getFormattedDurationTime(startTime);
-        Log.log(String.format("LLM completed in %02d hours, %02d minutes, %02d seconds and %02d milliseconds.",
+        Log.log(String.format("LLM run completed in %02d hours, %02d minutes, %02d seconds and %02d milliseconds.",
                 formattedTime[0], formattedTime[1], formattedTime[2], formattedTime[3]));
     }
 
