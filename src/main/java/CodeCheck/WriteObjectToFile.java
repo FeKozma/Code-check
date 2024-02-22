@@ -1,6 +1,7 @@
 package CodeCheck;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 
 public class WriteObjectToFile {
 
@@ -15,11 +16,18 @@ public class WriteObjectToFile {
         // Delete the temp result file if enabled and if it exists.
         if (TEMP_FILE_ENABLED) {
             File tempFile = new File(PATH_TO_RESULTS + File.separator + TEMP_FILE);
-            if (tempFile.exists() && tempFile.isDirectory()) tempFile.delete();
-            Log.log("Debug mode enabled, deleting the temporary file %s before continuing... ".formatted(PATH_TO_RESULTS + File.separator + TEMP_FILE));
+            if (tempFile.isFile()) {
+                tempFile.delete();
+                Log.log("Debug mode enabled, deleting the temporary file %s before continuing... ".formatted(PATH_TO_RESULTS + File.separator + TEMP_FILE));
+            }
+            else if (tempFile.isDirectory()) {
+                String errorMsg = "Debug mode enabled - The temporary file '%s' is a directory. Cannot continue!";
+                Log.error(errorMsg);
+                throw new FileNotFoundException(errorMsg);
+            }
         }
 
-        // Create directory if it doesn't exist.
+        // Create results directory if it doesn't exist.
         File file = new File(PATH_TO_RESULTS);
         if (!file.isDirectory()) {
             if (file.mkdirs()) {
