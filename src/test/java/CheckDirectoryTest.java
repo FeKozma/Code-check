@@ -1,14 +1,11 @@
 import CodeCheck.CheckDirectory;
-import CodeCheck.Log;
 import CodeCheck.ManyFunctions;
 import CodeCheck.Util;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
-import java.nio.file.FileSystems;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CheckDirectoryTest {
     @Test
