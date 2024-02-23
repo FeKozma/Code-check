@@ -41,7 +41,7 @@ public interface Log {
     static void log(String msg, ConfigInterface.Config.LoggingLevel lvl) {
         ConfigInterface.Config.LoggingLevel logLvl = ConfigInterface.conf.getLogLvl();
         if (logLvl.logOn(lvl)) {
-            logReduced("%s [%s] %s%n".formatted(
+            logReduced("%s [%s] %s".formatted(
                     LocalDateTime.now(),
                     lvl.name(),
                     msg),
@@ -67,7 +67,7 @@ public interface Log {
         );
     }
 
-    static void logReduced(String msg, ConfigInterface.Config.LoggingLevel level, boolean newLine) {
+    static private void logReduced(String msg, ConfigInterface.Config.LoggingLevel level) {
         Color colorLevel = switch (level) {
             case NONE, N, OFF, O -> Color.NONE; // No change in color.
             case ERROR, ERR, E -> Color.RED;
@@ -77,19 +77,6 @@ public interface Log {
             case TRACE, T -> Color.BLUE;
         };
 
-        if (newLine) System.out.println(colorLevel + msg + Color.RESET);
-        else System.out.print(colorLevel + msg + Color.RESET);
-    }
-
-    static void logReduced(String msg, ConfigInterface.Config.LoggingLevel level) {
-        logReduced(msg, level, false);
-    }
-
-    static void logReduced(String msg) {
-        logReduced(msg, ConfigInterface.Config.LoggingLevel.INFO, false);
-    }
-
-    static void logReduced(String msg, Object... formatting) {
-        logReduced(String.format(msg, formatting), ConfigInterface.Config.LoggingLevel.INFO, false);
+        System.out.println(colorLevel + msg + Color.RESET);
     }
 }
