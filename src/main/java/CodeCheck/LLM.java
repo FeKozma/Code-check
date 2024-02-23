@@ -2,6 +2,8 @@ package CodeCheck;
 
 import com.hexadevlabs.gpt4all.LLModel;
 
+import java.nio.file.Path;
+
 import java.nio.file.Files;
 import java.util.List;
 import java.util.Map;
@@ -19,7 +21,7 @@ public class LLM {
         startTime = System.currentTimeMillis();
 
         runIfConfig(() -> {
-            java.nio.file.Path modelPath = java.nio.file.Path.of(Util.checkIfHomePath(
+            Path modelPath = Path.of(Util.checkIfHomePath(
                     ConfigInterface.conf.getString("LLM_FILE")));
 
             if (Files.isDirectory(modelPath)) {
@@ -49,8 +51,9 @@ public class LLM {
             try {
                 model.close();
             } catch (Exception e) {
-                Log.error("LLM is not closing...");
-                throw new RuntimeException("LLM is not closing...", e);
+                String errorMessage = "LLM is not closing...";
+                Log.error(errorMessage);
+                throw new RuntimeException(errorMessage, e);
             }
             return true;
         });
@@ -66,7 +69,9 @@ public class LLM {
 
         return runIfConfig(() -> {
             String answer = model.chatCompletion(createMessage(question), config).choices.toString();
+
             Log.debug("Answer: " + answer);
+
             return answer;
         }).orElse("LLM has not been configured.");
     }
