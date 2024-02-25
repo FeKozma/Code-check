@@ -4,9 +4,11 @@ import java.io.File;
 import java.util.List;
 
 public interface CodeCheck {
+
     static void execute() throws Exception {
         ConfigInterface.conf.loadConfig();
-        String PATH_TO_CODE = Util.checkIfHomePath(ConfigInterface.conf.getString("PATH_TO_CODE"));
+
+        String PATH_TO_CODE = Util.checkIfHomePath(ConfigInterface.conf.getProperty("PATH_TO_CODE"));
         File baseCodeDir = new File(PATH_TO_CODE);
 
         CheckDirectory checkDirectory = new CheckDirectory();
