@@ -21,8 +21,8 @@ public class LLM {
         startTime = System.currentTimeMillis();
 
         runIfConfig(() -> {
-            Path modelPath = Path.of(Util.checkIfHomePath(
-                    ConfigInterface.conf.getString("LLM_FILE")));
+            Path modelPath = ConfigInterface.conf.getBoolean("RUN_WITH_LLM")
+                            .orElse(false) ? Path.of(Util.checkIfHomePath(ConfigInterface.conf.getProperty("LLM_FILE"))) : null;
 
             if (Files.isDirectory(modelPath)) {
                 Log.error("LLM_FILE not configured correctly - it is a directory, but was expecting a model file. Please change it into a correct model filepath.");
@@ -51,15 +51,13 @@ public class LLM {
             try {
                 model.close();
             } catch (Exception e) {
-                String errorMessage = "LLM is not closing...";
-                Log.error(errorMessage);
-                throw new RuntimeException(errorMessage, e);
+                throw new RuntimeException("LLM is not closing...", e);
             }
             return true;
         });
 
-        int[] formattedTime = Util.getFormattedDurationTime(startTime);
-        Log.log(String.format("LLM run completed in %02d hours, %02d minutes, %02d seconds and %02d milliseconds.",
+        int[] formattedTime = Util.getPreparedDurationTime(startTime);
+        Log.log(String.format("Run completed in %02d hours, %02d minutes, %02d seconds and %02d milliseconds.",
                 formattedTime[0], formattedTime[1], formattedTime[2], formattedTime[3]));
     }
 
@@ -81,7 +79,8 @@ public class LLM {
     }
 
     private <T> Optional<T> runIfConfig(Supplier<T> supplier) {
-        if (ConfigInterface.conf.getBoolean("RUN_WITH_LLM")) {
+        if (ConfigInterface.conf.getBoolean("RUN_WITH_LLM")
+                .orElse(false)) {
             return Optional.of(supplier.get());
         }
         return Optional.empty();

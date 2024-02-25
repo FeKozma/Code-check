@@ -1,10 +1,7 @@
 package CodeCheck;
 
 import java.io.*;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 
 public interface ConfigInterface {
     Config conf = new Config();
@@ -54,36 +51,70 @@ public interface ConfigInterface {
             }
         }
 
-        public String getString(String key) {
-            if (appProps == null) return null;
-            return appProps.get(key).toString();
+        public String getProperty(String key) {
+            if (appProps == null) {
+                Log.warning("'%s' not initialized. The key '%s' was not loaded".formatted(appProps.getClass().getSimpleName(), key));
+                throw new RuntimeException("'appProps' is null - cannot continue. Configuration not initialized.");
+            }
+
+            try {
+                return appProps.get(key).toString();
+            } catch (NullPointerException e) {
+                throw new NullPointerException(e.getMessage());
+            }
         }
 
-        public Boolean getBoolean(String key) {
-            return appProps.get(key).toString().equalsIgnoreCase("true");
+        public Optional<String> getString(String key) {
+            try {
+                return Optional.of(getProperty(key));
+            } catch (NullPointerException e) {
+                return Optional.empty();
+            }
         }
 
-        public List<String> getList(String key) {
-            String value = getString(key);
+        public Optional<Boolean> getBoolean(String key) {
+            try {
+                return Optional.of(getProperty(key).equalsIgnoreCase("true"));
+            } catch (NullPointerException e) {
+                return Optional.empty();
+            }
+        }
 
-            if (value == null)
-                return Collections.emptyList();
+        public Optional<Integer> getInteger(String key) {
+            try {
+                return Optional.of(Integer.parseInt(key));
+            } catch (NumberFormatException | NullPointerException e) {
+                return Optional.empty();
+            }
+        }
 
-            return Arrays
-                    .stream(value.substring(1, value.length() - 1).split(","))
-                    .map(String::strip)
-                    .toList();
+        public Optional<List<String>> getList(String key) {
+            try {
+                String value = getProperty(key);
+
+                if (value == null)
+                    return Optional.of(Collections.emptyList());
+
+                return Optional.of(
+                        Arrays
+                        .stream(value.substring(1, value.length() - 1).split(","))
+                        .map(String::strip)
+                        .toList());
+            } catch (NullPointerException e) {
+                return Optional.empty();
+            }
         }
 
         public LoggingLevel getLogLvl() {
-            String loggingLevel = getString("LOGGING_LEVEL");
-            if (loggingLevel == null) loggingLevel = "DEBUG";
+            String loggingLevel = getString("LOGGING_LEVEL")
+                    .orElse("DEBUG");
+
             return LoggingLevel.valueOf(loggingLevel);
         }
 
         private int countLines(File file) throws IOException {
-            BufferedReader reader = new BufferedReader(new FileReader(file));
             int lines = 0;
+            BufferedReader reader = new BufferedReader(new FileReader(file));
             while (reader.readLine() != null) lines++;
             reader.close();
             return lines;

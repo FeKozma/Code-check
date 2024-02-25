@@ -49,13 +49,13 @@ public interface Util {
      * @param startTime Input the start time.
      * @return An integer array of time the duration in HH:MM:SS:MS. 0 = h, 1 = m, 2 = s, 3 = ms
      */
-    static int[] getFormattedDurationTime(long startTime) {
+    static int[] getPreparedDurationTime(long startTime) {
         long millis = (System.currentTimeMillis() - startTime);
         int seconds = (int) millis / 1000;
         int minutes = (seconds % 3600) / 60;
         int hours = seconds / 3600;
 
-        return new int[]{hours, minutes, seconds % 60, (int) millis % 1000};
+        return new int[] {hours, minutes, seconds % 60, (int) millis % 1000};
     }
 
     static String checkIfHomePath(String path) {

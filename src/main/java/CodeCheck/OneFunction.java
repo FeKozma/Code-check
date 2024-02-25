@@ -13,36 +13,41 @@ public class OneFunction {
     private static final Pattern patternRemoveComments = Pattern.compile("(.*)(//.*)+");
     private static final Pattern patternRemoveSpacesTabsNewLines = Pattern.compile("\\s");
 
-    public OneFunction() {
+    protected OneFunction() {
         content = new ArrayList<>();
     }
 
     public int equals(OneFunction obj) {
         if (obj.content.size() > 2 && obj.name.equals(name) && obj.removeExtraInformationAndGetString().equals(removeExtraInformationAndGetString()))
             return 1;
-        if (obj.name.equals(name) && obj.content.size() > 4 && content.size() > 4) return 2;
-        if (obj.name.equals(name)) return 3;
+        if (obj.name.equals(name) && obj.content.size() > 4 && content.size() > 4)
+            return 2;
+        if (obj.name.equals(name))
+            return 3;
 
         return 10;
     }
 
     public Comparison compare(OneFunction other, LLM llm) {
-        switch (equals(other)) {
-            case 1: return new Comparison(true, "Functions are identical").setFunctions(this, other);
-            case 2: return similar(other, llm);
-            case 3: return new Comparison(false, false, "Empty or closetherby");
-            default:
-                return new Comparison();
-        }
+        return switch (equals(other)) {
+            case 1 -> new Comparison(true, "Functions are identical.").setFunctions(this, other);
+            case 2 -> similar(other, llm);
+            case 3 -> new Comparison(false, false, "Empty or closetherby.");
+            default -> new Comparison();
+        };
     }
 
     private Comparison similar(OneFunction obj, LLM llm) {
         List<String> thisCont = removeExtraInformation();
         List<String> objCont = obj.removeExtraInformation();
 
-        int matchingLines = objCont.stream().filter(objLine -> thisCont.contains(objLine)).toList().size();
+        int matchingLines = objCont
+                .stream()
+                .filter(thisCont::contains)
+                .toList()
+                .size();
 
-        if ((matchingLines + 0.0)/objCont.size() > 0.5 || matchingLines > 10)
+        if ((matchingLines + 0.0) / objCont.size() > 0.5 || matchingLines > 10)
             return new Comparison(false, true, "Matching lines " + matchingLines + " out of " + objCont.size()).setFunctions(this, obj);
         else
             return new Comparison(false, true, llmComparison(obj, llm)).setFunctions(this, obj);

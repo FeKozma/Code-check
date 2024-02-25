@@ -1,3 +1,4 @@
+
 # Code Check #
 
 Do you have a problem with duplicated functions in your java project? Here is the solution on how to find all the duplicate functions, specify the location of your repository in the local-config.properties file (just make a copy of config.properties) and run the code! Then you will get a file in "results" with all the places where functions match.
@@ -66,32 +67,19 @@ The results will be shown in the `/results/` folder. By default, the result nami
 ## Configuration file ##
 You can edit some configuration in `config.properties`.
 
-<details>
-  <summary>
-    Default configuration (click to expand)
-  </summary>
-
-###### *config.properties*
-```shell
-LOGGING_LEVEL=INFO
-  # This is related to TEMP_FILE below.
-TEMP_FILE_ENABLED=false
-  # If enabled, this file will be deleted and replaced every run instead of using the results files.
-TEMP_FILE=debugFile.txt
-  # Directory of where the result files are saved. They range from 0 to 99.
-PATH_TO_RESULTS=results
-  # Set this property to a path that should be excluded. It's regex based, so writing [file1, file2] would exclude any file containing file1 and file2.
-EXCLUDED_PATHS=[]
-  # Prefix for the result files.
-RESULT_NAME_PREFIX=result_{nr}
-  # The LLM located in project root.
-LLM_FILE=models/ggml-model-gpt4all-falcon-q4_0.bin
-  # Run with LLM - needs a model defined and will take more computing power and time to run.
-RUN_WITH_LLM=false
-  # Directory path to where the code is to be scanned.
-PATH_TO_CODE=src/test/resources/
-```
-</details>
+### Properties
+| Property           | Default values if not set (if not required) | Type                 | Description                                                  |
+|--------------------|---------------------------------------------|----------------------|--------------------------------------------------------------|
+| LOGGING_LEVEL      | DEBUG                                       | String               | What level to show logs in.                                  |
+| TEMP_FILE_ENABLED  | false                                       | Boolean (true/false) | Whether to use a temporary file.                             |
+| TEMP_FILE          | debugFile.txt                               | String               | Where the temporary file is located.                         |
+| PATH_TO_RESULTS    | results                                     | String               | Results directory.                                           |
+| RESULTS_FILE_LIMIT | 100                                         | Integer              | Since it's creating a new file each run, there is a limit.   |
+| RESULT_NAME_PREFIX | result_{nr}                                 | String               | Result name. {nr} will be replaced by an incremental number. |
+| EXCLUDED_PATHS     | []                                          | List of Strings      | Separated by commas. Files/Paths to exclude during a run.    |
+| LLM_FILE           | models/ggml-model-gpt4all-falcon-q4_0.bin   | String               | If running with LLM, this has to be set linking to a model.  |
+| RUN_WITH_LLM       | false                                       | String               | Whether to use LLM during the run or not.                    |
+| PATH_TO_CODE       | src/test/resources/                         | String               | Required attribute. Where the code is located.               |
 
 #### LOGGING_LEVEL
 The different options are the following:
