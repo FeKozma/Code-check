@@ -2,14 +2,20 @@ package CodeCheck;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.function.Predicate;
+import java.util.regex.Pattern;
 
 public class OneFunction {
-    public String name;
-    public int nrParams;
-    public String file;
-    public int line;
-    public List<String> content = new ArrayList<>();
+    public String name, file;
+    public int nrParams, line;
+    public List<String> content;
+
+    private static final Pattern patternRemoveComments = Pattern.compile("(.*)(//.*)+");
+    private static final Pattern patternRemoveSpacesTabsNewLines = Pattern.compile("\\s");
+
+    public OneFunction() {
+        content = new ArrayList<>();
+    }
 
     public int equals(OneFunction obj) {
         if (obj.content.size() > 2 && obj.name.equals(name) && obj.removeExtraInformationAndGetString().equals(removeExtraInformationAndGetString()))
@@ -75,10 +81,11 @@ public class OneFunction {
 
     private List<String> removeExtraInformation() {
         return this.content.stream()
-                .map(s -> s.replaceAll("(.*)(//.*)+", "$1"))
-                .filter(s -> !s.matches("^\\s*//"))
-                .map(s -> s.replace(" ", ""))
-                .filter(s -> !s.startsWith("Log"))
-                .filter(s -> !s.isEmpty()).toList();
+                .map(String::strip)
+                .map(s -> patternRemoveComments.matcher(s).replaceAll("$1"))
+                .map(s -> patternRemoveSpacesTabsNewLines.matcher(s).replaceAll(""))
+                .filter(s -> !s.startsWith(Log.class.getSimpleName()))
+                .filter(Predicate.not(String::isEmpty))
+                .toList();
     }
 }
