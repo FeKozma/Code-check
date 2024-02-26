@@ -82,7 +82,7 @@ public interface ConfigInterface {
 
         public Optional<Integer> getInteger(String key) {
             try {
-                return Optional.of(Integer.parseInt(key));
+                return Optional.of(Integer.parseInt(getProperty(key)));
             } catch (NumberFormatException | NullPointerException e) {
                 return Optional.empty();
             }
@@ -107,9 +107,14 @@ public interface ConfigInterface {
 
         public LoggingLevel getLogLvl() {
             String loggingLevel = getString("LOGGING_LEVEL")
-                    .orElse("DEBUG");
+                    .orElse("INFO");
 
-            return LoggingLevel.valueOf(loggingLevel);
+            try {
+                return LoggingLevel.valueOf(loggingLevel.toUpperCase());
+            } catch (IllegalArgumentException e) {
+                Log.error(getLogLvl().name() + "::LoggingLevel got an error. %s.".formatted(e.getMessage()));
+                return LoggingLevel.INFO;
+            }
         }
 
         private int countLines(File file) throws IOException {

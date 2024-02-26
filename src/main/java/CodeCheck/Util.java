@@ -17,7 +17,7 @@ public interface Util {
                 if (isFirstTry)
                     Log.log("The file %s already exist, trying to create the next id... ", file.getPath());
                 else
-                    Log.log("%s ... ", file.getPath());
+                    Log.trace("Trying %s... ".formatted(file.getName()));
 
                 return null;
             }
