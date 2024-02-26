@@ -33,7 +33,8 @@ public class LLM {
             }
 
             model = new LLModel(modelPath);
-            model.setThreadCount(6);
+            model.setThreadCount(ConfigInterface.conf.getInteger("LLM_THREADS")
+                    .orElse(4));
 
             Log.debug("Thread Count: " + model.threadCount());
 

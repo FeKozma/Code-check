@@ -68,18 +68,19 @@ The results will be shown in the `/results/` folder. By default, the result nami
 You can edit some configuration in `config.properties`.
 
 ### Properties
-| Property           | Default values if not set (if not required) | Type                 | Description                                                  |
-|--------------------|---------------------------------------------|----------------------|--------------------------------------------------------------|
-| LOGGING_LEVEL      | DEBUG                                       | String               | What level to show logs in.                                  |
-| TEMP_FILE_ENABLED  | false                                       | Boolean (true/false) | Whether to use a temporary file.                             |
-| TEMP_FILE          | debugFile.txt                               | String               | Where the temporary file is located.                         |
-| PATH_TO_RESULTS    | results                                     | String               | Results directory.                                           |
-| RESULTS_FILE_LIMIT | 100                                         | Integer              | Since it's creating a new file each run, there is a limit.   |
-| RESULT_NAME_PREFIX | result_{nr}                                 | String               | Result name. {nr} will be replaced by an incremental number. |
-| EXCLUDED_PATHS     | []                                          | List of Strings      | Separated by commas. Files/Paths to exclude during a run.    |
-| LLM_FILE           | models/ggml-model-gpt4all-falcon-q4_0.bin   | String               | If running with LLM, this has to be set linking to a model.  |
-| RUN_WITH_LLM       | false                                       | String               | Whether to use LLM during the run or not.                    |
-| PATH_TO_CODE       | src/test/resources/                         | String               | Required attribute. Where the code is located.               |
+| Property             | Default values if not set (if not required) | Type         | Description                                                  |
+|----------------------|---------------------------------------------|--------------|--------------------------------------------------------------|
+| LOGGING_LEVEL        | DEBUG                                       | String       | What level to show logs in.                                  |
+| TEMP_FILE_ENABLED    | false                                       | Boolean      | Whether to use a temporary file.                             |
+| TEMP_FILE            | debugFile.txt                               | String       | Where the temporary file is located.                         |
+| PATH_TO_RESULTS      | results                                     | String       | Results directory.                                           |
+| RESULT_NAME_PREFIX   | result_{nr}                                 | String       | Result name. {nr} will be replaced by an incremental number. |
+| RESULTS_FILE_LIMIT   | 100                                         | Integer      | Since it's creating a new file each run, there is a limit.   |
+| EXCLUDED_PATHS       | []                                          | List<String> | Separated by commas. Files/Paths to exclude during a run.    |
+| RUN_WITH_LLM         | false                                       | String       | Whether to use LLM during the run or not.                    |
+| LLM_FILE             | models/ggml-model-gpt4all-falcon-q4_0.bin   | String       | If running with LLM, this has to be set linking to a model.  |
+| LLM_THREADS          | 4                                           | Integer      | How many threads the LLM will be using.                      |
+| PATH_TO_CODE         | src/test/resources/                         | String       | Required attribute. Where the code is located.               |
 
 #### LOGGING_LEVEL
 The different options are the following:
