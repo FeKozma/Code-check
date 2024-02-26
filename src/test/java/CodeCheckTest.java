@@ -18,6 +18,7 @@ public class CodeCheckTest {
 
     private static final String userDirectory = System.getProperty("user.dir");
     private static final String testConfPath = userDirectory + File.separator + "test-config.properties";
+
     private final String resultFolder = "test-results";
     private final String resultNamePrefix = "test-result_{nr}";
     private final String resultFileName = "test-result_0.txt";
@@ -71,14 +72,18 @@ public class CodeCheckTest {
 
     private void writeConf() {
         List<String> conf = List.of(
-                "LOGGING_LEVEL=DEBUG",
-                "TEMP_FILE_ENABLED=false",
-                "TEMP_FILE=debugFile.txt",
+                "LOGGING_LEVEL=INFO",
+                "PATH_TO_CODE=src/test/resources/",
                 "PATH_TO_RESULTS=" + resultFolder,
                 "RESULT_NAME_PREFIX=" + resultNamePrefix,
+                "RESULTS_FILE_LIMIT=100",
+                "EXCLUDED_PATHS=[]",
+                "LLM_FILE=\"\"",
                 "RUN_WITH_LLM=false",
-                "PATH_TO_CODE=src/test/resources/",
-                "EXCLUDED_PATHS=[]");
+                "LLM_THREADS=4",
+                "TEMP_FILE_ENABLED=false",
+                "TEMP_FILE=debugFile.txt"
+        );
 
         Util.write(testConfPath, "# properties used under testing - this file will be overwritten during testing", false);
         conf.forEach(line -> Util.write(testConfPath, line));
