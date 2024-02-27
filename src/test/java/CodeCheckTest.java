@@ -127,7 +127,7 @@ public class CodeCheckTest {
             while (myReader.hasNextLine()) {
                 String data = myReader.nextLine();
                 content.append("\n").append(data);
-                Log.debug(data);
+                Log.trace("readResult->data: " + data);
             }
 
             myReader.close();
