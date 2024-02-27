@@ -64,12 +64,12 @@ public class LLM {
 
     public String getAnswer(String question) {
 
-        Log.debug("Question: " + question);
+        Log.trace("Question: " + question);
 
         return runIfConfig(() -> {
             String answer = model.chatCompletion(createMessage(question), config).choices.toString();
 
-            Log.debug("Answer: " + answer);
+            Log.trace("Answer: " + answer);
 
             return answer;
         }).orElse("LLM has not been configured.");
