@@ -58,7 +58,7 @@ public interface ConfigInterface {
             }
 
             try {
-                return appProps.get(key).toString();
+                return appProps.get(key).toString().strip();
             } catch (NullPointerException e) {
                 throw new NullPointerException(e.getMessage());
             }
