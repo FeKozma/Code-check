@@ -48,8 +48,12 @@ public class WriteObjectToFile {
             }
         }
 
+        int resultsLimit = RESULTS_FILE_LIMIT <= 0 ? 100 : RESULTS_FILE_LIMIT;
+        if (RESULTS_FILE_LIMIT <= 0)
+            Log.warning("The results file limit '%d' is incorrect - setting the limit to %d.".formatted(RESULTS_FILE_LIMIT, resultsLimit));
+
         // Look for the next file to write towards.
-        for (int i = 0; i < RESULTS_FILE_LIMIT; i++) {
+        for (int i = 0; i < resultsLimit; i++) {
 
             String prefix = RESULT_NAME_PREFIX.isEmpty() // Check if it's empty - in case it would be `""`.
                     ? "result_%d.txt".formatted(i) // Nothing is set, so use the default value.
@@ -61,8 +65,8 @@ public class WriteObjectToFile {
 
             if (createFile(fileName, i == 0)) break;
 
-            if (i >= RESULTS_FILE_LIMIT - 1) {
-                throw new Exception("Warning! The maximum amount of result of %d files has been reached! Cannot continue execution. Please increase the maximum limit, use another filename or path, or delete existing result files.".formatted(RESULTS_FILE_LIMIT));
+            if (i >= resultsLimit - 1) {
+                throw new Exception("Warning! The maximum amount of result of %d files has been reached! Cannot continue execution. Please increase the maximum limit, use another filename or path, or delete existing result files.".formatted(resultsLimit));
             }
         }
     }
@@ -73,6 +77,10 @@ public class WriteObjectToFile {
     }
 
     public void write(String obj) {
-        Util.write(PATH_TO_RESULTS + File.separator + file.getName(), obj);
+        try {
+            Util.write(PATH_TO_RESULTS + File.separator + file.getName(), obj);
+        } catch (NullPointerException e) {
+            throw new NullPointerException(e.getMessage());
+        }
     }
 }

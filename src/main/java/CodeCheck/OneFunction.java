@@ -61,7 +61,7 @@ public class OneFunction {
     public String llmComparison(OneFunction other, LLM llm) {
 
         Log.trace("llmComparison->this:  " + this.content.toString());
-        Log.trace("llmComparison->this:  " + other.content.toString());
+        Log.trace("llmComparison->other:  " + other.content.toString());
 
         String functionThis = getFunctionMsg(1) + this.content.toString(); // getFunctionMsg(1)
         String functionOther = getFunctionMsg(2) + other.content.toString(); // other.getFunctionMsg(2)
