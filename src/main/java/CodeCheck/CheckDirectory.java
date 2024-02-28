@@ -83,7 +83,7 @@ public class CheckDirectory {
                         manyFunctions.commitFile(file.getName());
                         manyFunctions.commitLine(lineNumber);
 
-                        Log.debug("Full path: " + file.getAbsolutePath());
+                        Log.debug("Accessing file at the path: " + file.getAbsolutePath());
                         Log.trace("Function: " +
                                 manyFunctions.commit.name + " in " +
                                 manyFunctions.commit.file + ":" +
