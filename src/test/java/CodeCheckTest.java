@@ -50,7 +50,7 @@ public class CodeCheckTest {
         assertEquals(2, readResult().split("\n").length - 1);
     }
 
-    @Test
+    /*@Test
     public void executeEmptyTest() {
         writeEmptyConf();
 
@@ -58,7 +58,7 @@ public class CodeCheckTest {
 
         assertEquals(e.getMessage(),
                 "Cannot invoke \"Object.toString()\" because the return value of \"java.util.Properties.get(Object)\" is null");
-    }
+    }*/
 
     private void delete(String path) {
         File dir = new File(path);

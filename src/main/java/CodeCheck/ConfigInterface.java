@@ -33,18 +33,27 @@ public interface ConfigInterface {
         public void loadConfig() throws IOException {
             this.appProps = new Properties();
 
-            String rootDirPath = System.getProperty("user.dir") + File.separator;
-            String appConfigPath = rootDirPath + "config.properties";
-            File test_conf = new File(rootDirPath + "test-config.properties");
+            final String rootDirPath = System.getProperty("user.dir") + File.separator;
+            final File default_conf = new File(rootDirPath + "config.properties");
+            final File test_conf = new File(rootDirPath + "test-config.properties");
+            final File local_conf = new File(rootDirPath + "local-config.properties");
+
+            File appConfigPathLocalSquish = null;
 
             if (test_conf.isFile() && countLines(test_conf) > 1) {
-                appConfigPath = rootDirPath + "test-config.properties";
-            } else if (new File(rootDirPath + "local-config.properties").isFile()) {
-                appConfigPath = rootDirPath + "local-config.properties";
+                appConfigPathLocalSquish = test_conf;
+            } else if (local_conf.isFile() && countLines(local_conf) >= 1) {
+                appConfigPathLocalSquish = local_conf;
             }
 
             try {
-                appProps.load(new FileInputStream(appConfigPath));
+                Log.log("Default configuration file `%s` found, loading properties.".formatted(default_conf.getName()));
+                appProps.load(new FileInputStream(default_conf));
+
+                if (appConfigPathLocalSquish != null) {
+                    Log.log("Found `%s`, loading extra configuration properties.".formatted(appConfigPathLocalSquish.getName()), Log.Color.PURPLE);
+                    appProps.load(new FileInputStream(appConfigPathLocalSquish));
+                }
             } catch (Exception e) {
                 throw new NullPointerException("Could not find any matching expression for root path \"%s\".\n%s"
                         .formatted(rootDirPath, e.getMessage()));
@@ -117,12 +126,8 @@ public interface ConfigInterface {
             }
         }
 
-        private int countLines(File file) throws IOException {
-            int lines = 0;
-            BufferedReader reader = new BufferedReader(new FileReader(file));
-            while (reader.readLine() != null) lines++;
-            reader.close();
-            return lines;
+        private long countLines(File file) throws IOException {
+            return new BufferedReader(new FileReader(file)).lines().count();
         }
     }
 }
