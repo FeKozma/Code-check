@@ -18,10 +18,10 @@ public class OneFunction {
     }
 
     private enum Compare {
-        Default,
+        NoMatch,
         Identical,
         Similar,
-        CloseThereby,
+        CloseThereby
     }
 
     public Compare equals(OneFunction obj) {
@@ -32,7 +32,7 @@ public class OneFunction {
         if (obj.name.equals(name))
             return Compare.CloseThereby;
 
-        return Compare.Default;
+        return Compare.NoMatch;
     }
 
     public Comparison compare(OneFunction laterOneFunction, LLM llm) {
@@ -40,7 +40,7 @@ public class OneFunction {
             case Identical -> new Comparison(true, "Functions are identical.").setFunctions(this, laterOneFunction);
             case Similar -> similar(laterOneFunction, llm);
             case CloseThereby -> new Comparison(false, false, "Empty or closetherby.");
-            case Default -> new Comparison();
+            case NoMatch -> new Comparison();
         };
     }
 
