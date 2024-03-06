@@ -17,23 +17,30 @@ public class OneFunction {
         content = new ArrayList<>();
     }
 
-    public int equals(OneFunction obj) {
-        if (obj.content.size() > 2 && obj.name.equals(name) && obj.removeExtraInformationAndGetString().equals(removeExtraInformationAndGetString()))
-            return 1;
-        if (obj.name.equals(name) && obj.content.size() > 4 && content.size() > 4)
-            return 2;
-        if (obj.name.equals(name))
-            return 3;
-
-        return 10;
+    private enum Compare {
+        Default,
+        Identical,
+        Similar,
+        CloseThereby,
     }
 
-    public Comparison compare(OneFunction other, LLM llm) {
-        return switch (equals(other)) {
-            case 1 -> new Comparison(true, "Functions are identical.").setFunctions(this, other);
-            case 2 -> similar(other, llm);
-            case 3 -> new Comparison(false, false, "Empty or closetherby.");
-            default -> new Comparison();
+    public Compare equals(OneFunction obj) {
+        if (obj.content.size() > 2 && obj.name.equals(name) && obj.removeExtraInformationAndGetString().equals(removeExtraInformationAndGetString()))
+            return Compare.Identical;
+        if (obj.name.equals(name) && obj.content.size() > 4 && content.size() > 4)
+            return Compare.Similar;
+        if (obj.name.equals(name))
+            return Compare.CloseThereby;
+
+        return Compare.Default;
+    }
+
+    public Comparison compare(OneFunction laterOneFunction, LLM llm) {
+        return switch (equals(laterOneFunction)) {
+            case Identical -> new Comparison(true, "Functions are identical.").setFunctions(this, laterOneFunction);
+            case Similar -> similar(laterOneFunction, llm);
+            case CloseThereby -> new Comparison(false, false, "Empty or closetherby.");
+            case Default -> new Comparison();
         };
     }
 
