@@ -1,16 +1,18 @@
 public class File2 {
     private void function1(String parameter1) {
-        Log.debug("this is a test in File3");
-        // and it looks similar to function1 in file2
-        if (iLikeChockolate == true) { // but with some more comments
+        Log.debug("This is a test in File3");
+        // And it looks similar to function1 in file2.
+        if (Chocolate == true) { // But with some more comments. =)
             Shop shop = getShop();
-            while(shop.hasChokolate()) {
-                if(Bank.account.balance < 200) { // and a diffrent line
-                    Log.warning("and more logging");
-                    Log.warning("im poor now");
+            while (shop.hasChocolate()) {
+                if (Bank.account.balance < 200) { // And a diffrent line. :O
+                    Log.warning("More logging, however...");
+                    Log.warning("I'm poor now. :(");
+                    Log.warning("Also, the lines with \"Log\" or a comment will be ignored.");
                     break;
+                    Log.info("This will never happen.");
                 }
-                shop.buy("Chockolate");
+                shop.buy("Chocolate");
             }
         }
     }
