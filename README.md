@@ -1,13 +1,14 @@
 
 # Code Check #
 
-Do you have a problem with duplicated functions in your coding project? This might be the solution on how to find all the duplicate functions. Specify the location of your repository in the `local-config.properties` file (just make a copy of `config.properties` and edit it however you want) and run the code! Then you will get a file in a "results" folder with places where functions/methods of different code are being similar or matching.
+Do you have a problem with duplicated functions in your coding project? This might be the solution on finding them.
 
 ### Features ###
 
-* Query an LLM on complicated situations where 2 functions could be similar
-* Configuration
-* Testing
+* Query an LLM (large language model) on complicated situations where 2 or more functions could be similar.
+* Configuration - it's easy to change the configurations.
+* Comparison - matching through names of lines and functions. 
+* Tested on both UNIX and Windows.
 
 ## Testing ##
 
@@ -17,32 +18,39 @@ To run the test files you can run this command with Gradle:
 ./gradlew test
 ```
 
-To run tests directly in IntelliJ/Eclipse/... (or the program of your choice), just run the testing files, and it should work.
+To run tests directly in IntelliJ or Eclipse (or a program of your choice). Just run the testing files - and it should be working.
 
-## Getting started with the large language model (LLM) ##
+## Getting started with large language model (LLM) ##
 
-### Download a language model ###
+### Download the language model ###
+
+These are only suggestions, you may use any source and model as you want.
+
 * Either download the bin-file directly from [Hugging Face](https://huggingface.co/) which we used for testing:
 [ggml-model-gpt4all-falcon-q4_0.bin](https://huggingface.co/nomic-ai/gpt4all-falcon-ggml/resolve/main/ggml-model-gpt4all-falcon-q4_0.bin?download=true) (4.06 GB)
 
-* Or choose downloads from the website for gpt4all-falcon-ggml:
+* Or choose downloads from their website for gpt4all-falcon-ggml:
 [https://huggingface.co/nomic-ai/gpt4all-falcon-ggml/tree/main](https://huggingface.co/nomic-ai/gpt4all-falcon-ggml/tree/main)
 
 * Or you may also download any [other model](https://huggingface.co/models) of your taste and use that one instead.
 
 ## Setting up the configuration ##
 
-### Add model and set the configuration to use the LLM ###
+Create and update the local file `local-config.properties` (make a copy of `config.properties` and edit it.), then after running you will get a file in a "results" folder with places where functions/methods of different code are being similar or matching.
+
+### Add model and set the configuration to use LLM ###
 
 1. Move the downloaded LLM into a new folder called `models` in the main repository.
 2. In `local-config.properties`, set `LLM_FILE` to the name of your downloaded model, for example `model/ggml-model-gpt4all-falcon-q4_0.bin`.
 3. In `local-config.properties`, set `RUN_WITH_LLM` to `true`.
 
 ## Results ##
-The results will be shown in the `/results/` folder. By default, the result naming is `result_{nr}` where `{nr}` is represented by a number that increases for each execution.
 
-## Configuration files ##
-You can edit configuration in `local-config.properties`. However, the main configuration will still be loaded from [Properties](`config.properties`) first. After that [Local Properties](local-config.properties) and [Testing Properties](test-config.properties) (the testing properties is reset every run).
+By default results will be shown in the `./results/` folder. Also, by default, the naming would be `result_{nr}` where `{nr}` is represented by a number that is incremental (until RESULT_FILE_LIMIT).
+
+## Configurations ##
+
+You can edit configurations in `local-config.properties`. However, the main configuration will still be loaded from [Properties](`config.properties`) first. After that [Local Properties](local-config.properties) and [Testing Properties](test-config.properties) (the testing properties is reset every run).
 
 ### Properties
 
