@@ -69,7 +69,7 @@ public interface Log {
 
     static private void logReduced(String msg, ConfigInterface.Config.LoggingLevel level) {
         Color colorLevel = switch (level) {
-            case NONE, N, OFF, O -> Color.NONE; // No change in color.
+            case NONE, N -> Color.NONE; // No change in color.
             case ERROR, ERR, E -> Color.RED;
             case WARNING, WARN, W -> Color.YELLOW;
             case INFO, I -> Color.WHITE;
