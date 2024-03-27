@@ -1,25 +1,25 @@
 public class File2 {
     private void function1(String parameter1) {
-        Log.debug("this is a test in File1");
-        if (iLikeChockolate == true) {
+        Log.debug("This is a test in File1...");
+        if (iLikeChocolate == true) {
             Shop shop = getShop();
-            while(shop.hasChokolate()) {
-                if(Bank.account.balance < 100) {
-                    Log.warning("im poor now");
+            while (shop.hasChocolate()) {
+                if (Bank.account.balance < 100) {
+                    Log.warning("I'm poor now. :(");
                     break;
                 }
-                shop.buy("Chockolate");
+                shop.buy("Chocolate");
             }
         }
     }
 
     public void function2(Stirng parameter2) {
         if (Thing.isActive()) {
-            Log.debug("This thing you see, its active");
+            Log.debug("This thing you see -- its active!");
             Thing.doStuffnowPLS();
-            Thing.stopItNoe();
+            Thing.stopItNow();
         } else {
-            Thins.start();
+            Thing.start();
             function(parameter2);
         }
     }

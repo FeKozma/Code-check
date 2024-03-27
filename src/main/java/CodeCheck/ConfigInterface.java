@@ -8,7 +8,7 @@ public interface ConfigInterface {
 
     class Config {
         enum LoggingLevel {
-            NONE(0), N(NONE.lvl), OFF(NONE.lvl), O(OFF.lvl),
+            NONE(0), N(NONE.lvl),
             ERROR(1), ERR(ERROR.lvl), E(ERROR.lvl),
             WARNING(2), WARN(WARNING.lvl), W(WARNING.lvl),
             INFO(3), I(INFO.lvl),

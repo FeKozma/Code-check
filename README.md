@@ -1,71 +1,58 @@
 
 # Code Check #
 
-Do you have a problem with duplicated functions in your java project? Here is the solution on how to find all the duplicate functions, specify the location of your repository in the local-config.properties file (just make a copy of config.properties) and run the code! Then you will get a file in "results" with all the places where functions match.
+Do you have a problem with duplicated functions in your coding project, such as Java? This may be the solution of finding them.
 
-### There are even some extra features such as ###
+Specify the location of your repository in the `local-config.properties` file (just make a copy of `config.properties`) and run the code! Then you will get a file in the "`results`"-folder with all the places where functions match.
 
-* query an LLM on complicated situations where 2 functions could be similar
-* lots of configuration
-* it even has testing for it!
+### Features ###
+
+* Query an LLM (large language model) on complicated situations where 2 or more functions could be similar.
+* Configuration - it's easy to change the configurations.
+* Comparison - matching through names of lines and functions. 
+* Tested on both UNIX and Windows.
 
 ## Testing ##
 
-### Manually ###
-
-To run the tests run this command:
+To run the test files you can run this command with Gradle:
 
 ```bash
 ./gradlew test
 ```
 
-### Setting up pre-commit testing ###
+To run tests directly in IntelliJ or Eclipse (or a program of your choice). Just run the testing files - and it should be working.
 
-If you want the tests to run when you commit code (to be sure it's working), you can install this hook locally.
-
-To skip using it once, use `-n` or `--no-verify` when committing.
-E.g. `git commit -nm "[commit message]"`
-
-#### Install Hook ####
-
-```bash
-cp pre-commit.tests .git/hooks/pre-commit
-chmod u+x .git/hooks/pre-commit
-```
-
-#### Uninstall Hook ####
-
-```bash
-rm .git/hooks/pre-commit
-```
-
-## Getting started with the large language model (LLM) ##
+## Getting started with large language model (LLM) ##
 
 ### Download the language model ###
-* Either download the bin-file directly from [Hugging Face](https://huggingface.co/):
+
+These are only suggestions, you may use any source and model as you want.
+
+* Either download the bin-file directly from [Hugging Face](https://huggingface.co/) which we used for testing:
 [ggml-model-gpt4all-falcon-q4_0.bin](https://huggingface.co/nomic-ai/gpt4all-falcon-ggml/resolve/main/ggml-model-gpt4all-falcon-q4_0.bin?download=true) (4.06 GB)
 
-* Or choose downloads from the website:
+* Or choose downloads from the website for gpt4all-falcon-ggml:
 [https://huggingface.co/nomic-ai/gpt4all-falcon-ggml/tree/main](https://huggingface.co/nomic-ai/gpt4all-falcon-ggml/tree/main)
 
-* Or you may also download any [other model](https://huggingface.co/models) of your taste and use that one instead.
+* You mou may also download any [other model](https://huggingface.co/models) of your taste, and use that one instead.
 
-### Setting up the configuration ###
+## Setting up the configuration ##
 
-#### Add model and set the configuration to use LLM ####
+Create and update the local file `local-config.properties` (make a copy of `config.properties` and edit it.), then after running you will get a file in a "results" folder with places where functions/methods of different code are being similar or matching.
 
-1. Move the downloaded LLM into a new folder called `model` in the main repository.
-2. In `config.properties`, set `LLM_FILE` to the name of your downloaded model (e.g. model/ggml-model-gpt4all-falcon-q4_0.bin).
-3. In `config.properties`, set `RUN_WITH_LLM` to `true`.
+### Adding the model and setting the configuration to use LLM ###
 
-#### Usage ####
-Run `Main.java` in the project. <!-- TODO: Add run option/script that works "on the go". -->
+1. Move the downloaded LLM into a new folder called `models` in the main repository.
+2. In `local-config.properties`, set `LLM_FILE` to the name of your downloaded model, for example `model/ggml-model-gpt4all-falcon-q4_0.bin`.
+3. In `local-config.properties`, set `RUN_WITH_LLM` to `true`.
 
-#### Results ####
-The results will be shown in the `/results/` folder. By default, the result naming is `result_{nr}` where `{nr}` is represented by a number that increases for each execution.
+## Results ##
 
-## Configuration file ##
-You can edit some configuration in `config.properties`.
+By default results will be shown in the `./results/` folder. Also, by default, the naming would be `result_{nr}` where `{nr}` is represented by a number that is incremental (until RESULT_FILE_LIMIT).
+
+## Configurations ##
+
+You can edit configurations in `local-config.properties`. However, the main configuration will still be loaded from [Properties](`config.properties`) first. After that [Local Properties](local-config.properties) and [Testing Properties](test-config.properties) (the testing properties is reset every run).
 
 ### Properties
 
@@ -83,14 +70,14 @@ You can edit some configuration in `config.properties`.
 | TEMP_FILE_ENABLED    | false                                       | Boolean      | Whether to use a temporary file.                             |
 | TEMP_FILE            | debugFile.txt                               | String       | Where the temporary file is located.                         |
 
-#### LOGGING_LEVEL
+### LOGGING_LEVEL
 The different options are the following:
 
-|           | ERROR | WARNING | INFO | DEBUG | TRACE |
-|-----------|:-----:|:-------:|:----:|:-----:|:-----:|
-| OFF/NONE  |       |         |      |       |       |
-| ERROR     |   X   |         |      |       |       |
-| WARNING   |   X   |    X    |      |       |       |
-| INFO      |   X   |    X    |  X   |       |       |
-| DEBUG     |   X   |    X    |  X   |   X   |       |
-| TRACE     |   X   |    X    |  X   |   X   |   X   |
+|         | ERROR | WARNING | INFO | DEBUG | TRACE |
+|---------|:-----:|:-------:|:----:|:-----:|:-----:|
+| NONE    |       |         |      |       |       |
+| ERROR   |   X   |         |      |       |       |
+| WARNING |   X   |    X    |      |       |       |
+| INFO    |   X   |    X    |  X   |       |       |
+| DEBUG   |   X   |    X    |  X   |   X   |       |
+| TRACE   |   X   |    X    |  X   |   X   |   X   |

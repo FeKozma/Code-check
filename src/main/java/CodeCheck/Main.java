@@ -12,7 +12,7 @@ public class Main {
 
         CodeCheck.execute();
 
-        Log.log("Shutting down at: %s.".formatted(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"))));
         Log.log("Total duration: %s".formatted(Util.getFormattedDurationTime(startTime)));
+        Log.log("Shutting down at: %s.".formatted(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"))));
     }
 }
