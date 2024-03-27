@@ -1,7 +1,9 @@
 
 # Code Check #
 
-Do you have a problem with duplicated functions in your coding project? This might be the solution on finding them.
+Do you have a problem with duplicated functions in your coding project, such as Java? This may be the solution of finding them.
+
+Specify the location of your repository in the `local-config.properties` file (just make a copy of `config.properties`) and run the code! Then you will get a file in the "`results`"-folder with all the places where functions match.
 
 ### Features ###
 
@@ -14,7 +16,7 @@ Do you have a problem with duplicated functions in your coding project? This mig
 
 To run the test files you can run this command with Gradle:
 
-```sh
+```bash
 ./gradlew test
 ```
 
@@ -29,16 +31,16 @@ These are only suggestions, you may use any source and model as you want.
 * Either download the bin-file directly from [Hugging Face](https://huggingface.co/) which we used for testing:
 [ggml-model-gpt4all-falcon-q4_0.bin](https://huggingface.co/nomic-ai/gpt4all-falcon-ggml/resolve/main/ggml-model-gpt4all-falcon-q4_0.bin?download=true) (4.06 GB)
 
-* Or choose downloads from their website for gpt4all-falcon-ggml:
+* Or choose downloads from the website for gpt4all-falcon-ggml:
 [https://huggingface.co/nomic-ai/gpt4all-falcon-ggml/tree/main](https://huggingface.co/nomic-ai/gpt4all-falcon-ggml/tree/main)
 
-* Or you may also download any [other model](https://huggingface.co/models) of your taste and use that one instead.
+* You mou may also download any [other model](https://huggingface.co/models) of your taste, and use that one instead.
 
 ## Setting up the configuration ##
 
 Create and update the local file `local-config.properties` (make a copy of `config.properties` and edit it.), then after running you will get a file in a "results" folder with places where functions/methods of different code are being similar or matching.
 
-### Add model and set the configuration to use LLM ###
+### Adding the model and setting the configuration to use LLM ###
 
 1. Move the downloaded LLM into a new folder called `models` in the main repository.
 2. In `local-config.properties`, set `LLM_FILE` to the name of your downloaded model, for example `model/ggml-model-gpt4all-falcon-q4_0.bin`.
